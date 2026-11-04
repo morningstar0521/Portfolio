@@ -1,4 +1,12 @@
 // From Resume Builder/profile/core.md. Phone number is deliberately not published.
+export const portrait = {
+  src: "/shubh-ghiya.webp",
+  alt: "Portrait of Shubh Ghiya in a dark suit, smiling, in warm afternoon light",
+  caption: "Subject: Shubh Ghiya",
+  width: 630,
+  height: 788,
+};
+
 export const profile = {
   name: "Shubh Ghiya",
   role: "Software Engineer",
@@ -8,7 +16,7 @@ export const profile = {
   linkedin: "https://www.linkedin.com/in/shubh-ghiya",
   linkedinHandle: "shubh-ghiya",
   location: "Bhopal, India",
-  resumePdf: "/resume/Shubh-Ghiya-Resume.pdf",
+  resumePdf: "/resume/Shubh-Ghiya-SDE-Resume.pdf",
   positioning:
     "I build software that makes complex systems more reliable, useful and measurable: production full-stack platforms, resilient backends, developer tools and machine-learning systems.",
   seeking: "Looking for software engineering internships in 2026 and full-time roles from 2027.",

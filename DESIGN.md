@@ -2,50 +2,41 @@
 
 Source of truth for visuals: `mentalist_portfolio_prd.md` (section 4). This file records the decisions made while building it.
 
-## Concept
-An investigator's case archive after hours. Dark ink room, warm paper evidence, one crimson thread. The theme is the presentation layer; every number is labelled with what kind of proof it is.
+## Concept (v2, 2026-11-04: "Golden hour → Red John")
+A consultant's case room in late-afternoon Sacramento sun: cream walls, venetian-blind light, manila folders, a cork evidence board with red string, tea rings, and handwritten margin notes. The investigation happens in daylight. Only the final file (Red John / contact) turns the lights off. v1 (dark noir, Bebas Neue) was replaced at the user's request because it read as a generic crime thriller.
 
-## Colour (dark only; PRD 4.2 is dark-first, so there is no light theme)
-| Token | Hex | Role |
-|---|---|---|
-| ink | #101113 | page background |
-| ink-soft | #181a1d | alternate sections, cards |
-| panel | #202226 | board cards, bar tracks |
-| paper | #f1eee7 | primary text; evidence/exhibit surfaces |
-| paper-muted | #c5c0b6 | secondary text |
-| paper-ink / paper-ink-muted | #1b1c1f / #55524b | text on paper |
-| ash | #8b8c90 | metadata (PRD #85868A nudged up for 5:1 on ink) |
-| line | #383a3f | rules, borders |
-| crimson / crimson-bright | #a51e32 / #c52b42 | buttons, threads, accents. Not for small text |
-| signal | #e35d70 | crimson for small text on ink (added; 5.3:1) |
-| brass | #b9a27b | archival labels, sparingly |
-| success | #8ba68b | LIVE / PRODUCTION markers only |
-
-Red John (contact) is the only crimson-flooded surface: #140709 base with crimson radial light.
+## Colour
+| Token | Day | Night (.night, contact page) | Role |
+|---|---|---|---|
+| ground | #f4ead5 | #120708 | page background |
+| sunk | #ebddc1 | #1a0b0d | alternate sections, panels |
+| card | #fbf6ea | #21100f | paper, index cards, controls |
+| folder | #e3c88e | - | manila surfaces (.manila) |
+| cork | #a97f52 | - | evidence board |
+| fg / muted / faint | #2a1e16 / #5c4a3b / #6e5a47 | #f3e9d7 / #cdbfa8 / #a08f7c | text (faint ≥ 4.5:1 on ground and sunk) |
+| line | #d8c4a0 | #4a2a28 | rules |
+| crimson | #9e1b2c | same | primary button, red string, notes, alerts |
+| amber | #82540e | #d9b26a | small amber text |
+| sun | #e9a646 | - | light only, never text |
+| success | #3f6b45 | - | LIVE / production markers |
 
 ## Type
-- Display: Bebas Neue 400, uppercase, line-height 0.88. Hero 60–148px fluid.
-- Body: Manrope variable 200–800, 15–18px, line-height 1.5–1.7, measure 68ch.
-- Labels: IBM Plex Mono 400/500, 11–13px, uppercase, tracking 0.14em.
-- Fonts are self-hosted in `app/fonts` (OFL, copied from @fontsource).
+- Display: Cormorant Garamond 500/600 (+500 italic), sentence case, line-height 0.95. Italic for the one emphasised word.
+- Hand: Caveat variable, only for margin notes, cold reading and the card trick. Never for facts or numbers that matter.
+- Body: Manrope variable. Labels: IBM Plex Mono, uppercase, tracked.
+- All fonts self-hosted in app/fonts (OFL).
 
-## Shape and space
-- Square corners everywhere (paper and files). Only pins are round.
-- Gutter clamp(16px, 4vw, 56px); max width 1440px. Sections 96–128px vertical.
-- Buttons 52px tall; every tap target ≥ 44px.
+## Signature moments
+- Hero: blinds light + sunbeam that follows the mouse; handwritten aside under the headline.
+- Cold reading (hero): three handwritten lines deduced in the browser (time of day, referrer or device, last case visited). Nothing is sent anywhere.
+- Card trick (home, section B): pick the role you're hiring for; the card flips to "I knew you'd pick that one", then the relevant files. The note admits it's theatre.
+- Evidence board: cork, manila cards, red string; a black string leads to File 08.
+- Case pages: a handwritten margin note under the opening line (editorial, never a claim).
+- Case 02: live interrogation of the real EC2 service through /api/ledger/* (server proxy, key never in the browser, per-IP rate limit, visitor-scoped sandbox merchant).
+- Contact: :root:has(.night) turns the whole page dark crimson.
 
-## Components
-- Evidence board (hero, ≥768px): 7 file cards + subject card + sealed File 08, strings drawn in SVG; hover/focus lights a card's string crimson and shows its one verified clue. Phones get a plain numbered index instead.
-- Case card: file tab (paper) + dark body, status stamp, headline result with evidence-kind tag.
-- Case page: cover with giant ghost number and stamp, sticky case index (desktop) / disclosure (mobile), six numbered sections, paper exhibit cards, one bespoke diagram per case.
-- Evidence kinds: PRODUCTION · LOCAL BENCHMARK · OFFLINE EVALUATION · COMPETITION RESULT · CODE-VERIFIED.
-
-## Motion (CSS only, no animation library)
-- Entrance: translateY 18px + fade, 700ms cubic-bezier(.2,.7,.2,1), 70ms stagger.
-- Board: cards pin in, strings draw (stroke-dashoffset), stamps thump in once.
-- Scroll: `animation-timeline: view()` reveals and a scroll progress bar; skipped where unsupported (content stays visible).
-- Lamp: warm radial light follows a mouse on the hero only.
-- `prefers-reduced-motion: reduce` removes all of it.
+## Shape, space, motion
+Unchanged from v1: square corners, 1440px max width, 52px buttons, 44px tap targets, CSS-only motion (entrance, write-in for handwriting, card flip, string draw), all removed under prefers-reduced-motion.
 
 ## Content rules
 Only facts marked verified/stated in `Resume Builder/profile`. Respect every PRD do-not-claim list. Local numbers say "local". No phone number on the public site.

@@ -29,6 +29,9 @@ export type Evidence = {
 
 export type CaseLink = { label: string; href: string; kind: "live" | "source" };
 
+/** Real screenshots in public/cases/<slug>/. width/height are the file's pixel size. */
+export type Shot = { src: string; alt: string; caption: string; width: number; height: number };
+
 export type CaseFile = {
   slug: string;
   number: string;
@@ -39,6 +42,8 @@ export type CaseFile = {
   status: "LIVE" | "LOCAL PROJECT" | "COMPETITION PROJECT";
   period: string;
   opening: string;
+  /** Margin note in handwriting: editorial voice, never a claim. */
+  note: string;
   summary: string;
   problem: string;
   role: string[];
@@ -51,6 +56,9 @@ export type CaseFile = {
   links: CaseLink[];
   cli?: string;
   caveat?: string;
+  /** Pinned photo on the case cover (top right). */
+  hero?: Shot;
+  shots?: Shot[];
   lastVerified: string;
 };
 
@@ -66,6 +74,7 @@ export const cases: CaseFile[] = [
     categories: ["FULL-STACK", "BACKEND"],
     status: "LIVE",
     period: "Aug 2025 – Present",
+    note: "Follow the money. Literally.",
     opening:
       "A live commerce system is never just a storefront. Every cart, payment, promotion and admin action has to agree on the truth.",
     summary:
@@ -147,6 +156,13 @@ export const cases: CaseFile[] = [
     ],
     links: [{ label: "Visit the live operation", href: "https://nakhraliluxury.com/", kind: "live" }],
     caveat: "The repository is private, so this file links to the live store only.",
+    hero: { src: "/cases/nakhrali/home.webp", alt: "Nakhrali Luxury homepage with a necklace on a display bust", caption: "nakhraliluxury.com, live", width: 2000, height: 1136 },
+    shots: [
+      { src: "/cases/nakhrali/home.webp", alt: "Nakhrali Luxury homepage hero banner", caption: "Homepage of the live store.", width: 2000, height: 1136 },
+      { src: "/cases/nakhrali/product.webp", alt: "Nakhrali product page for a layered necklace set with gallery, price and add to cart", caption: "Product page on the live store.", width: 2000, height: 1261 },
+      { src: "/cases/nakhrali/cart.webp", alt: "Nakhrali shopping cart with order summary and recommendations", caption: "Cart. The total here is recomputed on the server at checkout; the browser never sets the price.", width: 2000, height: 1444 },
+      { src: "/cases/nakhrali/checkout.webp", alt: "Nakhrali checkout with Razorpay online payment and partial cash-on-delivery options; personal details blurred", caption: "Checkout: Razorpay or partial COD with a ₹250 advance. Personal details blurred.", width: 2000, height: 1490 },
+    ],
     lastVerified: "2026-10-30",
   },
   {
@@ -156,8 +172,9 @@ export const cases: CaseFile[] = [
     name: "Idempotent Event Processor",
     classification: "Backend · distributed systems",
     categories: ["BACKEND"],
-    status: "LOCAL PROJECT",
+    status: "LIVE",
     period: "2026",
+    note: "Same event twice. Same answer once.",
     opening:
       "In payment systems, “probably delivered” is not good enough. The same event can arrive twice, arrive late, or arrive after a worker disappears.",
     summary:
@@ -204,8 +221,11 @@ export const cases: CaseFile[] = [
       "Redis is a delivery mechanism, not the source of truth. Keeping truth in PostgreSQL is what makes full Redis loss recoverable.",
       "Successful responses prove very little about a queue. Checking invariants on final state catches the duplicates and losses that a green load test hides.",
     ],
-    links: [{ label: "Inspect the source", href: `${GH}/Idempotent-Event-Processor`, kind: "source" }],
-    caveat: "All throughput and latency numbers are local runs, not production or cloud measurements.",
+    links: [
+      { label: "Interrogate the live API", href: "/case-files/idempotent-event-processor#interrogate", kind: "live" },
+      { label: "Inspect the source", href: `${GH}/Idempotent-Event-Processor`, kind: "source" },
+    ],
+    caveat: "All throughput and latency numbers are local runs on one machine, not measurements of the hosted demo.",
     lastVerified: "2026-10-30",
   },
   {
@@ -217,6 +237,7 @@ export const cases: CaseFile[] = [
     categories: ["DEVELOPER TOOLS"],
     status: "LIVE",
     period: "2026",
+    note: "The README lied. The lockfile didn't.",
     opening: "A README is a promise about a codebase. This tool checks whether the repository can actually keep it.",
     summary:
       "Extracts claims from a README and checks them against manifests, lockfiles, CI and Docker files. Web app, npm CLI and GitHub Action.",
@@ -272,6 +293,7 @@ export const cases: CaseFile[] = [
     categories: ["MACHINE LEARNING"],
     status: "LIVE",
     period: "Jul 2026 · revised Oct 2026",
+    note: "Popular isn't the same as personal.",
     opening: "A recommendation is useful only when it beats a simple guess, and can explain why it made the choice.",
     summary:
       "Implicit-feedback ALS on MovieLens 25M, evaluated against a popularity baseline and deployed with FastAPI + Streamlit.",
@@ -316,6 +338,12 @@ export const cases: CaseFile[] = [
       "Beat a strong simple baseline first. A Bayesian popularity ranker is hard to beat on MovieLens; a 1.53× NDCG gain over it means something.",
       "More capacity is not automatically better. The 128-factor model overfit and lost NDCG, so the smaller one shipped.",
     ],
+    hero: { src: "/cases/movielens/home.webp", alt: "MovieLens Recommender app with movie search and system panel showing ALS with 64 factors", caption: "Live on Hugging Face Spaces", width: 2000, height: 1130 },
+    shots: [
+      { src: "/cases/movielens/recommendations.webp", alt: "Top 10 recommendations, each with a 'because you liked' explanation", caption: "Top 10 picks, each explained by the movie you liked that led to it.", width: 2000, height: 1139 },
+      { src: "/cases/movielens/search.webp", alt: "Searching titles and adding movies you like", caption: "Pick a few movies you like: the cold-start fold-in builds your taste vector without retraining.", width: 2000, height: 1134 },
+      { src: "/cases/movielens/taste-profile.webp", alt: "Taste profile bar chart of genres from the picked movies", caption: "Taste profile built from your picks.", width: 2000, height: 1125 },
+    ],
     links: [
       { label: "Try the recommender", href: "https://morningstar0521-movielens-recommender.hf.space", kind: "live" },
       { label: "View the source", href: `${GH}/movielens-recommender`, kind: "source" },
@@ -331,6 +359,7 @@ export const cases: CaseFile[] = [
     categories: ["FULL-STACK", "BACKEND"],
     status: "LIVE",
     period: "2025",
+    note: "Two drivers, one spot. Only one gets it.",
     opening: "A parking spot cannot belong to two bookings at once. The system has to enforce that rule even when requests arrive together.",
     summary:
       "Flask + Vue 3 parking platform on AWS EC2 that stays correct under concurrent bookings. Best Project Award, IIT Madras.",
@@ -375,6 +404,13 @@ export const cases: CaseFile[] = [
       { label: "View the source", href: `${GH}/Quick-Park`, kind: "source" },
     ],
     caveat: "The live demo runs on an IP-based demo host (sslip.io) on AWS EC2.",
+    hero: { src: "/cases/quickpark/home.webp", alt: "QuickPark landing page with a car in a parking garage", caption: "QuickPark on AWS EC2", width: 2000, height: 1125 },
+    shots: [
+      { src: "/cases/quickpark/spot-layout.webp", alt: "QuickPark lot view with 24 parking spots showing availability", caption: "Lot view: live spot availability, auto-assign or pick a spot.", width: 2000, height: 1143 },
+      { src: "/cases/quickpark/admin-lots.webp", alt: "QuickPark admin table of parking lots with rates, occupancy and revenue", caption: "Admin: manage lots, rates and revenue (test data).", width: 2000, height: 1144 },
+      { src: "/cases/quickpark/user-dashboard.webp", alt: "QuickPark user dashboard with active parking session and recent bookings", caption: "User dashboard with an active session (test account).", width: 2000, height: 1139 },
+      { src: "/cases/quickpark/receipt.webp", alt: "QuickPark parking receipt with booking, location and time details", caption: "Booking receipt with PDF download.", width: 2000, height: 1146 },
+    ],
     lastVerified: "2026-10-30",
   },
   {
@@ -386,6 +422,7 @@ export const cases: CaseFile[] = [
     categories: ["MACHINE LEARNING"],
     status: "COMPETITION PROJECT",
     period: "2026",
+    note: "Misspellings are confessions.",
     opening: "Nearly two hundred thousand comments. Four imbalanced classes. The useful signal is often hiding in the way a word is misspelled.",
     summary: "Ranked 5th of 2,343 in an IIT Madras Kaggle competition with a 9-model blend over 198K comments.",
     problem:
@@ -441,16 +478,17 @@ export const cases: CaseFile[] = [
     categories: ["AI", "FULL-STACK"],
     status: "LIVE",
     period: "2026",
+    note: "Two opinions. A third if both go quiet.",
     opening: "An idea is not a business plan. VentureLens turns an early concept into a structured set of assumptions that can be examined.",
-    summary: "Two LLMs score a startup idea in parallel across 5 weighted dimensions, with a rule-based fallback when both fail.",
+    summary: "Two AI pipelines analyse a startup idea in parallel and combine into a weighted 0–100 Venture Score, with rule-based fallbacks.",
     problem:
       "An AI-assisted startup-validation platform: score an idea across weighted dimensions, then help the founder assemble a team, without the product breaking when a model provider is down.",
     role: ["Solo project (all 28 commits)."],
-    stack: ["TypeScript", "Next.js 15 (App Router, Server Actions)", "React 19", "Tailwind CSS 4", "NextAuth v5", "Zod", "Neon PostgreSQL", "Google Gemini 1.5 Flash", "Groq (Llama 3.3 70B)", "Vercel"],
+    stack: ["TypeScript", "Next.js 15 (App Router, Server Actions)", "React 19", "Tailwind CSS 4", "NextAuth v5", "Zod", "Neon PostgreSQL", "Google Gemini 2.5 Flash", "Groq (gpt-oss-120b, with model fallbacks)", "Vercel"],
     stackShort: ["Next.js 15", "TypeScript", "NextAuth v5", "Gemini + Groq", "PostgreSQL"],
-    headline: { value: "2 models + rules", label: "parallel LLM scoring with a rule-based fallback", kind: "code-verified" },
+    headline: { value: "2 pipelines + rules", label: "parallel AI analysis with rule-based fallbacks", kind: "code-verified" },
     evidence: [
-      { value: "0–100", label: "Venture Score merged from Gemini and Groq run in parallel", kind: "code-verified" },
+      { value: "0–100", label: "Venture Score from two AI pipelines run in parallel (Gemini: market · Groq: competition, risk, feasibility)", kind: "code-verified" },
       { value: "5", label: "weighted dimensions: market, feasibility, competition, risk, innovation", kind: "code-verified" },
       { value: "3-tier", label: "fallback for team suggestions: Gemini → Groq → rules", kind: "code-verified" },
       { value: "70+", label: "score required to unlock team building, enforced on the server", kind: "code-verified" },
@@ -458,11 +496,12 @@ export const cases: CaseFile[] = [
     ],
     story: [
       {
-        title: "Two opinions, one score",
+        title: "Two analysts, one score",
         points: [
-          "Gemini 1.5 Flash and Groq Llama 3.3 70B score the idea in parallel; the results merge into one 0–100 Venture Score.",
+          "Two pipelines run in parallel: Gemini 2.5 Flash analyses market potential (falling back to Groq), while Groq analyses competition, risk and feasibility.",
+          "Groq tries gpt-oss-120b first and moves down a list of models if one fails, with a 20-second timeout per request.",
           "Weights: market 30%, feasibility 25%, competition 20%, risk 15%, innovation 10%.",
-          "If both APIs fail, a rule-based scorer still returns a result.",
+          "Model output is normalised field by field; anything missing or malformed is filled from a rule-based scorer, so a report always renders.",
         ],
       },
       {
@@ -489,7 +528,13 @@ export const cases: CaseFile[] = [
       { label: "Try VentureLens", href: "https://venturelens-beige.vercel.app/", kind: "live" },
       { label: "View the source", href: `${GH}/VentureLens`, kind: "source" },
     ],
-    lastVerified: "2026-10-30",
+    hero: { src: "/cases/venturelens/landing.webp", alt: "VentureLens landing page: turn your startup idea into a decision-ready venture report", caption: "venturelens, live on Vercel", width: 2000, height: 1139 },
+    shots: [
+      { src: "/cases/venturelens/score-report.webp", alt: "VentureLens report showing a Venture Score of 75 out of 100 with five dimension bars", caption: "Report for a sample idea (ClinicQ): 75/100 across five weighted dimensions.", width: 2000, height: 1127 },
+      { src: "/cases/venturelens/market-competition.webp", alt: "Market potential, competition analysis, risk factors and feasibility sections of a VentureLens report", caption: "Market, competition, risk and feasibility. Figures are the AI's estimates for a sample idea.", width: 2000, height: 1135 },
+      { src: "/cases/venturelens/team-builder.webp", alt: "AI-assisted team builder suggesting a Co-founder and CTO role with skills", caption: "Unlocked at 70+: AI-suggested founding roles, editable before posting.", width: 2000, height: 1132 },
+    ],
+    lastVerified: "2026-11-04",
   },
 ];
 

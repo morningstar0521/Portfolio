@@ -18,9 +18,9 @@ export function NavLinks({ mobile = false }: { mobile?: boolean }) {
         href={item.href}
         onClick={close}
         aria-current={active ? "page" : undefined}
-        className="display flex items-baseline gap-4 border-b border-line py-4 text-5xl aria-[current=page]:text-signal"
+        className="display flex items-baseline gap-4 border-b border-line py-4 text-5xl aria-[current=page]:text-alert"
       >
-        <span className="label text-ash">0{i}</span>
+        <span className="label text-faint">0{i}</span>
         {item.label}
       </Link>
     ) : (
@@ -28,8 +28,9 @@ export function NavLinks({ mobile = false }: { mobile?: boolean }) {
         key={item.href}
         href={item.href}
         aria-current={active ? "page" : undefined}
-        className="label relative inline-flex min-h-11 items-center px-3 whitespace-nowrap text-paper-muted transition-colors hover:text-paper aria-[current=page]:text-paper aria-[current=page]:after:absolute aria-[current=page]:after:inset-x-3 aria-[current=page]:after:bottom-2 aria-[current=page]:after:h-px aria-[current=page]:after:bg-signal"
+        className="folder-tab label relative -mb-px inline-flex h-11 items-center gap-2 px-3.5 whitespace-nowrap lg:px-5 text-muted transition-colors hover:text-fg aria-[current=page]:text-tag-ink"
       >
+        <span className="hidden !text-[10px] opacity-60 lg:inline">0{i + 1}</span>
         {item.label}
       </Link>
     );

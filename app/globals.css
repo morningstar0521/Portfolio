@@ -1,23 +1,29 @@
 @import "tailwindcss";
 
-/* Tokens: see DESIGN.md. Dark-first by design (PRD 4.2); there is no light theme. */
+/* Tokens: see DESIGN.md. Light ("golden hour") by default; dark = the Red John palette.
+   Dark applies when the visitor picks it (html[data-theme=dark]) and always on the contact page (.night). */
 @theme {
-  --color-ink: #101113;
-  --color-ink-soft: #181a1d;
-  --color-panel: #202226;
-  --color-paper: #f1eee7;
-  --color-paper-muted: #c5c0b6;
-  --color-paper-ink: #1b1c1f;
-  --color-paper-ink-muted: #55524b;
-  --color-ash: #8b8c90;
-  --color-line: #383a3f;
-  --color-crimson: #a51e32;
-  --color-crimson-bright: #c52b42;
-  --color-signal: #e35d70; /* crimson tuned for small text on ink: 5.3:1 */
-  --color-brass: #b9a27b;
-  --color-success: #8ba68b;
+  --color-ground: #f4ead5; /* sunlit cream wall */
+  --color-sunk: #ebddc1; /* shaded section */
+  --color-card: #fbf6ea; /* fresh paper */
+  --color-paper: #fbf6ea; /* paper that stays light in both themes */
+  --color-folder: #e3c88e; /* manila folder */
+  --color-cork: #a97f52; /* evidence board */
+  --color-fg: #2a1e16; /* walnut ink */
+  --color-muted: #5c4a3b;
+  --color-tag-ink: #2a1e16;
+  --color-tag-muted: #5a4630;
+  --color-faint: #6e5a47;
+  --color-line: #d8c4a0;
+  --color-crimson: #9e1b2c;
+  --color-crimson-bright: #b3253a;
+  --color-alert: #9e1b2c;
+  --color-amber: #82540e; /* amber for text */
+  --color-sun: #e9a646; /* amber for light, never text */
+  --color-success: #3f6b45;
 
-  --font-display: var(--font-bebas), "Arial Narrow", Impact, sans-serif;
+  --font-display: var(--font-cormorant), "Iowan Old Style", Georgia, serif;
+  --font-hand: var(--font-caveat), "Bradley Hand", "Segoe Print", cursive;
   --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-plex), ui-monospace, "SF Mono", Menlo, monospace;
 
@@ -25,31 +31,55 @@
 }
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
   --gutter: clamp(16px, 4vw, 56px);
 }
 
+/* Lights out: the final chapter. Redefines the palette for the whole page it appears on. */
+:root[data-theme="dark"],
+:root:has(.night),
+.night {
+  color-scheme: dark;
+  --color-ground: #120708;
+  --color-sunk: #1a0b0d;
+  --color-card: #21100f;
+  --color-fg: #f3e9d7;
+  --color-muted: #cdbfa8;
+  --color-faint: #a08f7c;
+  --color-line: #4a2a28;
+  --color-alert: #f07a88;
+  --color-amber: #d9b26a;
+  --color-crimson: #e0566b; /* lifted so crimson text reads on the dark ground */
+  --color-crimson-bright: #ec6f82;
+  --color-success: #8fbf93;
+  --color-line: #4a2a28;
+}
+
 html {
-  background: var(--color-ink);
+  background: var(--color-ground);
   scroll-padding-top: 88px;
 }
 
 body {
-  background: var(--color-ink);
-  color: var(--color-paper);
+  background: var(--color-ground);
+  color: var(--color-fg);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
 ::selection {
-  background: var(--color-crimson);
-  color: var(--color-paper);
+  background: var(--color-sun);
+  color: var(--color-tag-ink);
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-signal);
+  outline: 2px solid var(--color-crimson);
   outline-offset: 3px;
+}
+[data-theme="dark"] :focus-visible,
+.night :focus-visible {
+  outline-color: var(--color-alert);
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -72,18 +102,37 @@ body {
   position: fixed;
   inset: 0;
   z-index: 60;
-  opacity: 0.07;
-  mix-blend-mode: overlay;
+  opacity: 0.05;
+  mix-blend-mode: multiply;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+:root[data-theme="dark"] .grain,
+:root:has(.night) .grain {
+  mix-blend-mode: overlay;
+  opacity: 0.08;
 }
 
 /* ---------- Type helpers ---------- */
 .display {
   font-family: var(--font-display);
-  font-weight: 400;
-  line-height: 0.88;
-  letter-spacing: 0.005em;
-  text-transform: uppercase;
+  font-weight: 500;
+  line-height: 0.95;
+  letter-spacing: -0.012em;
+  font-variant-numeric: lining-nums;
+}
+.display em,
+.display i {
+  font-style: italic;
+  font-weight: 500;
+}
+
+/* Patrick Jane's margin notes */
+.hand {
+  font-family: var(--font-hand);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: 0;
+  text-transform: none;
 }
 
 .label {
@@ -110,6 +159,11 @@ body {
   letter-spacing: 0.16em;
   text-transform: uppercase;
   line-height: 1;
+  mix-blend-mode: multiply;
+}
+[data-theme="dark"] .stamp,
+.night .stamp {
+  mix-blend-mode: normal;
 }
 
 /* ---------- Buttons ---------- */
@@ -139,45 +193,156 @@ body {
   transform: translateX(3px);
 }
 .btn-primary {
-  background: var(--color-crimson);
-  color: var(--color-paper);
+  background: #9e1b2c;
+  color: #fbf6ea;
 }
 .btn-primary:hover {
-  background: var(--color-crimson-bright);
+  background: #b3253a;
 }
-.btn-paper {
-  background: var(--color-paper);
-  color: var(--color-paper-ink);
+.btn-fg {
+  background: var(--color-fg);
+  color: var(--color-ground);
 }
-.btn-paper:hover {
-  background: #fff;
+.btn-fg:hover {
+  opacity: 0.9;
 }
 .btn-ghost {
-  border-color: var(--color-line);
-  color: var(--color-paper);
+  border-color: color-mix(in oklab, var(--color-fg) 35%, transparent);
+  color: var(--color-fg);
 }
 .btn-ghost:hover {
-  border-color: var(--color-paper-muted);
+  border-color: var(--color-fg);
 }
 
 .link-underline {
   text-decoration: underline;
-  text-decoration-color: var(--color-line);
+  text-decoration-color: color-mix(in oklab, var(--color-fg) 30%, transparent);
   text-underline-offset: 0.25em;
   text-decoration-thickness: 1px;
   transition: text-decoration-color 160ms;
 }
 .link-underline:hover {
-  text-decoration-color: var(--color-signal);
+  text-decoration-color: var(--color-crimson);
 }
 
-/* ---------- Paper surface ---------- */
-.paper {
-  background-color: var(--color-paper);
-  color: var(--color-paper-ink);
+/* Paper stays light in both themes, so its accents keep their daylight values. */
+.manila,
+.bg-paper {
+  --color-crimson: #9e1b2c;
+  --color-crimson-bright: #b3253a;
+  --color-amber: #82540e;
+  --color-success: #3f6b45;
+}
+
+/* Calling card colour: dried red by day, wetter red after dark. */
+.thumbprint {
+  color: #8e1424;
+}
+[data-theme="dark"] .thumbprint,
+.night .thumbprint {
+  color: #c4283f;
+}
+
+/* ---------- Manila folder surface ---------- */
+.manila {
+  background-color: var(--color-folder);
+  color: var(--color-tag-ink);
   background-image:
-    radial-gradient(120% 80% at 0% 0%, rgba(255, 255, 255, 0.5), transparent 60%),
-    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='p'><feTurbulence type='fractalNoise' baseFrequency='.55' numOctaves='3'/><feColorMatrix values='0 0 0 0 .4  0 0 0 0 .35  0 0 0 0 .25  0 0 0 .09 0'/></filter><rect width='100%' height='100%' filter='url(%23p)'/></svg>");
+    radial-gradient(120% 80% at 0% 0%, rgba(255, 248, 230, 0.55), transparent 60%),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='p'><feTurbulence type='fractalNoise' baseFrequency='.55' numOctaves='3'/><feColorMatrix values='0 0 0 0 .45  0 0 0 0 .32  0 0 0 0 .15  0 0 0 .12 0'/></filter><rect width='100%' height='100%' filter='url(%23p)'/></svg>");
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset, 0 18px 30px -18px rgba(70, 40, 10, 0.45);
+}
+
+/* Tea-cup ring: Jane is never far from a cup. Decorative only. */
+.tea-ring {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle, transparent 54%, rgba(120, 72, 25, 0.16) 57%, rgba(120, 72, 25, 0.05) 61%, transparent 64%);
+}
+
+/* Late-afternoon sun through venetian blinds. */
+.blinds {
+  pointer-events: none;
+  /* One soft patch of slatted light behind the board, fading out before the text. */
+  background:
+    repeating-linear-gradient(
+      -24deg,
+      rgba(255, 214, 140, 0) 0 44px,
+      rgba(255, 205, 120, 0.2) 44px 70px
+    ),
+    radial-gradient(60% 70% at 78% 40%, rgba(255, 196, 102, 0.32), transparent 70%);
+  filter: blur(5px);
+  mask-image: radial-gradient(48% 62% at 80% 42%, #000 0%, rgba(0, 0, 0, 0.6) 45%, transparent 75%);
+}
+/* After dark the blinds let in a dim lamp, not the sun. */
+[data-theme="dark"] .blinds {
+  opacity: 0.18;
+}
+[data-theme="dark"] .lamp {
+  background: radial-gradient(560px circle at var(--mx, 75%) var(--my, 30%), rgba(224, 86, 107, 0.12), transparent 70%);
+}
+[data-theme="dark"] .tea-ring {
+  opacity: 0.4;
+}
+
+/* Cork evidence board */
+.cork {
+  background-color: var(--color-cork);
+  background-image:
+    radial-gradient(rgba(60, 35, 10, 0.35) 1px, transparent 1.5px),
+    radial-gradient(rgba(255, 230, 190, 0.25) 1px, transparent 1.5px);
+  background-size: 7px 7px, 11px 11px;
+  background-position: 0 0, 3px 5px;
+  box-shadow:
+    inset 0 0 0 10px #6b4a2b,
+    inset 0 0 0 11px #4f3420,
+    inset 0 0 60px rgba(40, 20, 5, 0.45),
+    0 30px 60px -30px rgba(60, 30, 5, 0.6);
+}
+
+/* ---------- Header: folder tabs + compacting on scroll ---------- */
+.header-row {
+  height: 72px;
+}
+.folder-tab {
+  clip-path: polygon(10px 0, calc(100% - 10px) 0, 100% 100%, 0 100%);
+  transition:
+    background-color 180ms var(--ease-out-file),
+    color 180ms var(--ease-out-file);
+}
+.folder-tab:hover {
+  background: color-mix(in oklab, var(--color-folder) 35%, transparent);
+}
+.folder-tab[aria-current="page"] {
+  background: var(--color-folder);
+  box-shadow: inset 0 2px 0 var(--color-crimson);
+}
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .header-row {
+      animation: compact linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 140px;
+    }
+    .site-header {
+      animation: lift linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 140px;
+    }
+  }
+}
+@keyframes compact {
+  to {
+    height: 60px;
+  }
+}
+@keyframes lift {
+  to {
+    box-shadow: 0 10px 30px -18px rgba(40, 20, 5, 0.45);
+  }
 }
 
 /* ---------- Scroll progress (CSS scroll-driven; absent where unsupported) ---------- */
@@ -187,7 +352,7 @@ body {
   bottom: -1px;
   height: 2px;
   width: 100%;
-  background: var(--color-crimson-bright);
+  background: var(--color-crimson);
   transform-origin: 0 50%;
   transform: scaleX(0);
 }
@@ -232,6 +397,10 @@ body {
     animation: stamp 520ms cubic-bezier(0.3, 1.4, 0.5, 1) both;
     animation-delay: 380ms;
   }
+  .write-in {
+    animation: write 900ms var(--ease-out-file) both;
+    animation-delay: calc(400ms + var(--i, 0) * 160ms);
+  }
 }
 @keyframes enter {
   from {
@@ -248,6 +417,14 @@ body {
     opacity: 1;
   }
 }
+@keyframes write {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
 
 /* ---------- Mobile menu (popover API, no JS) ---------- */
 .menu-sheet {
@@ -259,11 +436,11 @@ body {
   margin: 0;
   border: 0;
   padding: 0;
-  background: var(--color-ink);
-  color: var(--color-paper);
+  background: var(--color-ground);
+  color: var(--color-fg);
 }
 .menu-sheet::backdrop {
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(40, 20, 5, 0.4);
 }
 @media (prefers-reduced-motion: no-preference) {
   .menu-sheet:popover-open {
@@ -281,7 +458,6 @@ body {
 .board-card:hover,
 .board-card:focus-visible {
   transform: rotate(0deg) translateY(-6px) scale(1.04);
-  box-shadow: 0 24px 40px -12px rgba(0, 0, 0, 0.7);
   z-index: 5;
 }
 .board-card .clue {
@@ -298,7 +474,7 @@ body {
   transform: none;
 }
 .board-string {
-  stroke: var(--color-line);
+  stroke: color-mix(in oklab, var(--color-crimson) 75%, transparent);
   transition:
     stroke 220ms,
     stroke-width 220ms;
@@ -327,16 +503,40 @@ body {
   }
 }
 
-/* Lamp: warm light that follows the pointer on the hero. Fine pointers only. */
+/* Sunbeam: warm light that follows the mouse on the hero. Fine pointers only. */
 .lamp {
   background: radial-gradient(
-    520px circle at var(--mx, 70%) var(--my, 35%),
-    rgba(214, 178, 120, 0.13),
+    560px circle at var(--mx, 75%) var(--my, 30%),
+    rgba(255, 200, 110, 0.22),
     transparent 70%
   );
 }
 
-/* Hidden scrollbars for local horizontal scroll areas */
+/* ---------- Mentalist card trick ---------- */
+.trick-card {
+  perspective: 900px;
+}
+.trick-card > .inner {
+  display: grid;
+  transition: transform 700ms var(--ease-out-file);
+  transform-style: preserve-3d;
+}
+.trick-card > .inner > * {
+  grid-area: 1 / 1;
+  backface-visibility: hidden;
+}
+.trick-card > .inner > .back {
+  transform: rotateY(180deg);
+}
+.trick-card[data-flipped="true"] > .inner {
+  transform: rotateY(180deg);
+}
+@media (prefers-reduced-motion: reduce) {
+  .trick-card > .inner {
+    transition: none;
+  }
+}
+
 .scroll-x {
   overflow-x: auto;
   scrollbar-width: thin;

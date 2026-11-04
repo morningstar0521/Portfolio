@@ -9,7 +9,7 @@ export function Mark({ className }: { className?: string }) {
         y="26"
         textAnchor="middle"
         fill="currentColor"
-        style={{ font: "400 17px var(--font-bebas), Impact, sans-serif", letterSpacing: "0.04em" }}
+        style={{ font: "600 17px var(--font-cormorant), Georgia, serif", letterSpacing: "0.02em" }}
       >
         SG
       </text>

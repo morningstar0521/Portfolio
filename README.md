@@ -25,9 +25,9 @@ Set `SITE_URL` to the real domain (for example `https://shubhghiya.tech`) so can
 | `app/case-files/` | Archive with filters, and the case page template (`[slug]`) |
 | `components/diagrams/case-visuals.tsx` | One bespoke diagram per case |
 | `app/contact/` | Case 08 · Red John (`/red-john` redirects here) |
-| `app/resume/` | HTML résumé; `public/resume/Shubh-Ghiya-Resume.pdf` is printed from it |
+| `public/resume/Shubh-Ghiya-SDE-Resume.pdf` | Your resume, linked from Contact, the hero and About (replace the file to update it) |
 | `DESIGN.md` | Tokens, type, motion and component decisions |
 
 ## Content rules
 
-Every number comes from `Resume Builder/profile` and respects the PRD's do-not-claim lists. To change a fact, edit `content/*.ts` only. If you edit the résumé page, regenerate the PDF (print `/resume` to A4 PDF, margins 12/14 mm).
+Every number comes from `Resume Builder/profile` and respects the PRD's do-not-claim lists. To change a fact, edit `content/*.ts` only. Keep the resume PDF consistent with the case files.

@@ -56,22 +56,22 @@ function EventProcessor() {
           ["Sweeper", "Rebuilds delivery from PostgreSQL after complete Redis loss."],
           ["Dead-letter + replay", "Failed events park in a DLQ; only one concurrent replay can win."],
         ].map(([t, d]) => (
-          <div key={t} className="border border-line bg-ink-soft p-5">
-            <p className="label text-signal">Recovery</p>
-            <p className="mt-2 text-[16px] font-semibold text-paper">{t}</p>
-            <p className="mt-1 text-[14px] leading-relaxed text-paper-muted">{d}</p>
+          <div key={t} className="border border-line bg-sunk p-5">
+            <p className="label text-alert">Recovery</p>
+            <p className="mt-2 text-[16px] font-semibold text-fg">{t}</p>
+            <p className="mt-1 text-[14px] leading-relaxed text-muted">{d}</p>
           </div>
         ))}
       </div>
       <Panel title="Load test · local, 90 seconds, 3 workers">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <p className="display text-[clamp(48px,6vw,88px)] leading-none">
-            18,000 <span className="text-ash">/</span> 18,000
+            18,000 <span className="text-faint">/</span> 18,000
           </p>
           <p className="label pb-2 text-success">0 lost · 0 duplicated</p>
         </div>
         <div className="mt-4 h-3 w-full bg-crimson-bright" aria-hidden />
-        <p className="mt-3 text-[13px] text-ash">200 unique events/s under duplicate-heavy k6 load · API p95 3.78 ms · local machine, not production.</p>
+        <p className="mt-3 text-[13px] text-faint">200 unique events/s under duplicate-heavy k6 load · API p95 3.78 ms · local machine, not production.</p>
       </Panel>
     </div>
   );
@@ -141,7 +141,7 @@ function MovieLens() {
           <div className="scroll-x">
             <table className="w-full min-w-[320px] text-left text-[14px]">
               <caption className="sr-only">Recommendation latency in milliseconds</caption>
-              <thead className="label !text-[11px] text-ash">
+              <thead className="label !text-[11px] text-faint">
                 <tr className="border-b border-line">
                   <th className="py-2 font-normal">Request</th>
                   <th className="py-2 text-right font-normal">p50</th>
@@ -149,15 +149,15 @@ function MovieLens() {
                   <th className="py-2 text-right font-normal">p99</th>
                 </tr>
               </thead>
-              <tbody className="font-mono text-paper">
+              <tbody className="font-mono text-fg">
                 <tr className="border-b border-line">
-                  <th className="py-3 font-sans font-normal text-paper-muted">Known user</th>
+                  <th className="py-3 font-sans font-normal text-muted">Known user</th>
                   <td className="py-3 text-right">1.76 ms</td>
                   <td className="py-3 text-right">2.09 ms</td>
                   <td className="py-3 text-right">2.45 ms</td>
                 </tr>
                 <tr>
-                  <th className="py-3 font-sans font-normal text-paper-muted">Cold-start fold-in</th>
+                  <th className="py-3 font-sans font-normal text-muted">Cold-start fold-in</th>
                   <td className="py-3 text-right">3.56 ms</td>
                   <td className="py-3 text-right">11.05 ms</td>
                   <td className="py-3 text-right">11.34 ms</td>
@@ -177,14 +177,14 @@ function QuickPark() {
       <Panel title="The race · same parallel test, before and after" note="Fixed with atomic compare-and-set updates and 2 partial unique indexes; the test runs inside the production container.">
         <div className="grid gap-8 md:grid-cols-2">
           <div>
-            <p className="label text-signal">Before · spot P-01</p>
+            <p className="label text-alert">Before · spot P-01</p>
             <div className="mt-4 grid grid-cols-10 gap-1.5" role="img" aria-label="40 bookings created on one parking spot">
               {Array.from({ length: 40 }, (_, i) => (
                 <span key={i} className="aspect-square bg-crimson-bright/80" />
               ))}
             </div>
             <p className="display mt-4 text-5xl">40 bookings</p>
-            <p className="text-[14px] text-paper-muted">on one spot</p>
+            <p className="text-[14px] text-muted">on one spot</p>
           </div>
           <div>
             <p className="label text-success">After · spot P-01</p>
@@ -194,7 +194,7 @@ function QuickPark() {
               ))}
             </div>
             <p className="display mt-4 text-5xl">1 booking</p>
-            <p className="text-[14px] text-paper-muted">15 / 15 concurrency checks pass</p>
+            <p className="text-[14px] text-muted">15 / 15 concurrency checks pass</p>
           </div>
         </div>
       </Panel>
@@ -229,12 +229,12 @@ function CommentCategory() {
   return (
     <div className="grid gap-5">
       <Panel title="The leaderboard · 2,343 entries">
-        <div className="relative h-14 border border-line bg-ink" role="img" aria-label="Rank 5 out of 2,343, at the far left of the leaderboard">
+        <div className="relative h-14 border border-line bg-ground" role="img" aria-label="Rank 5 out of 2,343, at the far left of the leaderboard">
           <div className="absolute inset-y-0 left-0 w-[0.6%] min-w-[6px] bg-crimson-bright" />
-          <span className="label absolute top-1/2 left-4 -translate-y-1/2 text-paper">Rank 05</span>
-          <span className="label absolute top-1/2 right-4 -translate-y-1/2 text-ash">Rank 2,343</span>
+          <span className="label absolute top-1/2 left-4 -translate-y-1/2 text-fg">Rank 05</span>
+          <span className="label absolute top-1/2 right-4 -translate-y-1/2 text-faint">Rank 2,343</span>
         </div>
-        <p className="mt-3 text-[13px] text-ash">Top 0.21% · Kaggle competition, IIT Madras ML course · public score 0.84870.</p>
+        <p className="mt-3 text-[13px] text-faint">Top 0.21% · Kaggle competition, IIT Madras ML course · public score 0.84870.</p>
       </Panel>
       <div className="grid gap-5 lg:grid-cols-2">
         <Panel title="Blend · 9 models, Nelder–Mead weights on 3-fold OOF" note="The three largest blend weights are shown. The top one went to the model that reads characters, not words.">
@@ -242,7 +242,7 @@ function CommentCategory() {
             {models.map(([m, w], i) => (
               <li
                 key={m}
-                className={`flex items-center justify-between gap-3 border px-3 py-2 text-[14px] ${i === 0 ? "border-crimson-bright bg-crimson/10 text-paper" : "border-line text-paper-muted"}`}
+                className={`flex items-center justify-between gap-3 border px-3 py-2 text-[14px] ${i === 0 ? "border-crimson-bright bg-crimson/10 text-fg" : "border-line text-muted"}`}
               >
                 {m}
                 {w && <span className="shrink-0 font-mono text-[13px]">w {w}</span>}
@@ -259,16 +259,16 @@ function CommentCategory() {
             ].map(([k, v, s]) => (
               <div key={k} className="flex items-end justify-between gap-4 border-b border-line pb-3">
                 <div>
-                  <dt className="text-[14px] text-paper-muted">{k}</dt>
-                  <dd className="text-[12px] text-ash">{s}</dd>
+                  <dt className="text-[14px] text-muted">{k}</dt>
+                  <dd className="text-[12px] text-faint">{s}</dd>
                 </div>
                 <dd className="display text-4xl">{v}</dd>
               </div>
             ))}
           </dl>
           <div className="mt-6">
-            <p className="label mb-2 !text-[11px] text-ash">Smallest class · 2.8% of ~198K comments</p>
-            <div className="flex h-3 w-full bg-panel" aria-hidden>
+            <p className="label mb-2 !text-[11px] text-faint">Smallest class · 2.8% of ~198K comments</p>
+            <div className="flex h-3 w-full bg-card" aria-hidden>
               <div className="h-full w-[2.8%] bg-crimson-bright" />
             </div>
           </div>
@@ -293,36 +293,36 @@ function VentureLens() {
           {dims.map(([d, w], i) => (
             <div
               key={d}
-              className="flex flex-col justify-end border-r border-ink px-2 pb-2"
+              className="flex flex-col justify-end border-r border-ground px-2 pb-2"
               style={{ width: `${w}%`, background: `rgba(197,43,66,${0.95 - i * 0.17})` }}
             >
-              <span className="font-mono text-[12px] text-paper">{w}%</span>
+              <span className="font-mono text-[12px] text-fg">{w}%</span>
             </div>
           ))}
         </div>
-        <ul className="mt-3 grid grid-cols-2 gap-x-4 gap-y-1 text-[13px] text-paper-muted sm:grid-cols-5">
+        <ul className="mt-3 grid grid-cols-2 gap-x-4 gap-y-1 text-[13px] text-muted sm:grid-cols-5">
           {dims.map(([d, w]) => (
             <li key={d}>
-              {d} <span className="text-ash">{w}%</span>
+              {d} <span className="text-faint">{w}%</span>
             </li>
           ))}
         </ul>
       </Panel>
       <div className="grid gap-5 lg:grid-cols-2">
-        <Panel title="Scoring path" note="If both providers fail, a rule-based scorer still returns a score.">
+        <Panel title="Scoring path" note="Any section a model fails to return is filled by a rule-based scorer.">
           <Flow
             label="Scoring with fallback"
             steps={[
-              { title: "Gemini 1.5 Flash ∥ Groq Llama 3.3 70B", sub: "Called in parallel" },
+              { title: "Gemini 2.5 Flash ∥ Groq gpt-oss-120b", sub: "Market ∥ competition, risk, feasibility" },
               { title: "Merge", sub: "One 0–100 Venture Score", accent: true },
-              { title: "Rules fallback", sub: "When both APIs fail" },
+              { title: "Rules fallback", sub: "Fills any section a model misses" },
             ]}
           />
         </Panel>
         <Panel title="The 70+ gate" note="Checked in the server action and the API route, not only in the interface.">
           <div className="flex items-center gap-4">
-            <span className="display text-[72px] leading-none text-paper">70+</span>
-            <span className="text-[15px] leading-snug text-paper-muted">
+            <span className="display text-[72px] leading-none text-fg">70+</span>
+            <span className="text-[15px] leading-snug text-muted">
               unlocks team building, where a 3-tier engine (Gemini → Groq → rules) suggests founding roles and drops
               duplicates of roles already posted.
             </span>

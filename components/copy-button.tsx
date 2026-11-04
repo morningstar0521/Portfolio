@@ -22,13 +22,13 @@ export function CopyButton({ text, label, className = "" }: { text: string; labe
 
   return (
     <span className={`inline-flex flex-wrap items-center gap-3 ${className}`}>
-      <code id={id} className="font-mono text-[15px] text-paper">
+      <code id={id} className="font-mono text-[15px] text-fg">
         {text}
       </code>
       <button
         type="button"
         onClick={copy}
-        className="label inline-flex min-h-11 items-center gap-2 border border-line px-3 !text-[11px] text-paper-muted transition-colors hover:border-paper hover:text-paper"
+        className="label inline-flex min-h-11 items-center gap-2 border border-line px-3 !text-[11px] text-muted transition-colors hover:border-fg hover:text-fg"
       >
         <Copy /> {label}
       </button>

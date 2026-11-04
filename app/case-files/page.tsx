@@ -13,12 +13,12 @@ export default function CaseFilesPage() {
     <div className="wrap py-16 md:py-24">
       <header className="mb-12 grid gap-6 border-b border-line pb-12 md:grid-cols-12 md:items-end">
         <div className="md:col-span-8">
-          <p className="label enter text-signal">Archive · 07 files</p>
+          <p className="label enter text-alert">Archive · 07 files</p>
           <h1 className="display enter mt-4 text-[clamp(64px,10vw,160px)]" style={{ "--i": 1 } as React.CSSProperties}>
             The case archive
           </h1>
         </div>
-        <p className="enter text-[18px] leading-relaxed text-paper-muted md:col-span-4" style={{ "--i": 2 } as React.CSSProperties}>
+        <p className="enter text-[18px] leading-relaxed text-muted md:col-span-4" style={{ "--i": 2 } as React.CSSProperties}>
           Seven files. Different problems. One habit: follow the evidence.
         </p>
       </header>

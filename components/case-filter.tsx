@@ -20,17 +20,17 @@ export function CaseFilter() {
             type="button"
             aria-pressed={active === cat}
             onClick={() => setActive(cat)}
-            className="label min-h-11 border border-line px-4 !text-[11px] text-paper-muted transition-colors hover:border-ash hover:text-paper aria-pressed:border-paper aria-pressed:bg-paper aria-pressed:text-paper-ink"
+            className="label min-h-11 border border-line px-4 !text-[11px] text-muted transition-colors hover:border-faint hover:text-fg aria-pressed:border-fg aria-pressed:bg-fg aria-pressed:text-ground"
           >
             {cat}
           </button>
         ))}
       </div>
 
-      <p role="status" className="label mb-6 !text-[11px] text-ash">
+      <p role="status" className="label mb-6 !text-[11px] text-faint">
         {shown.length} of {cases.length} files{active !== "ALL" && ` · ${active}`}
         {active !== "ALL" && (
-          <button type="button" onClick={() => setActive("ALL")} className="link-underline ml-3 text-paper">
+          <button type="button" onClick={() => setActive("ALL")} className="link-underline ml-3 text-fg">
             Clear filter
           </button>
         )}

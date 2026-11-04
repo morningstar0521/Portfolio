@@ -39,3 +39,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+!.env.example
+
+# raw screenshots (unredacted); processed copies live in public/cases
+/images/
+
+# root-level drop files
+/*.pdf
+
