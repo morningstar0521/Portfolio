@@ -1,26 +1,350 @@
 @import "tailwindcss";
 
+/* Tokens: see DESIGN.md. Dark-first by design (PRD 4.2); there is no light theme. */
+@theme {
+  --color-ink: #101113;
+  --color-ink-soft: #181a1d;
+  --color-panel: #202226;
+  --color-paper: #f1eee7;
+  --color-paper-muted: #c5c0b6;
+  --color-paper-ink: #1b1c1f;
+  --color-paper-ink-muted: #55524b;
+  --color-ash: #8b8c90;
+  --color-line: #383a3f;
+  --color-crimson: #a51e32;
+  --color-crimson-bright: #c52b42;
+  --color-signal: #e35d70; /* crimson tuned for small text on ink: 5.3:1 */
+  --color-brass: #b9a27b;
+  --color-success: #8ba68b;
+
+  --font-display: var(--font-bebas), "Arial Narrow", Impact, sans-serif;
+  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex), ui-monospace, "SF Mono", Menlo, monospace;
+
+  --ease-out-file: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: dark;
+  --gutter: clamp(16px, 4vw, 56px);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  background: var(--color-ink);
+  scroll-padding-top: 88px;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-ink);
+  color: var(--color-paper);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--color-crimson);
+  color: var(--color-paper);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-signal);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* ---------- Layout ---------- */
+.wrap {
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* ---------- Film grain: one fixed layer, no JS ---------- */
+.grain {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  opacity: 0.07;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+/* ---------- Type helpers ---------- */
+.display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 0.88;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+}
+
+.label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.4;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.measure {
+  max-width: 68ch;
+}
+
+/* ---------- Stamp: rubber-stamped status label ---------- */
+.stamp {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  border: 1.5px solid currentColor;
+  padding: 0.35em 0.7em 0.3em;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  min-height: 52px;
+  padding: 0 1.4rem;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  border: 1px solid transparent;
+  transition:
+    background-color 180ms var(--ease-out-file),
+    color 180ms var(--ease-out-file),
+    border-color 180ms var(--ease-out-file),
+    transform 180ms var(--ease-out-file);
+}
+.btn svg {
+  transition: transform 180ms var(--ease-out-file);
+}
+.btn:hover svg {
+  transform: translateX(3px);
+}
+.btn-primary {
+  background: var(--color-crimson);
+  color: var(--color-paper);
+}
+.btn-primary:hover {
+  background: var(--color-crimson-bright);
+}
+.btn-paper {
+  background: var(--color-paper);
+  color: var(--color-paper-ink);
+}
+.btn-paper:hover {
+  background: #fff;
+}
+.btn-ghost {
+  border-color: var(--color-line);
+  color: var(--color-paper);
+}
+.btn-ghost:hover {
+  border-color: var(--color-paper-muted);
+}
+
+.link-underline {
+  text-decoration: underline;
+  text-decoration-color: var(--color-line);
+  text-underline-offset: 0.25em;
+  text-decoration-thickness: 1px;
+  transition: text-decoration-color 160ms;
+}
+.link-underline:hover {
+  text-decoration-color: var(--color-signal);
+}
+
+/* ---------- Paper surface ---------- */
+.paper {
+  background-color: var(--color-paper);
+  color: var(--color-paper-ink);
+  background-image:
+    radial-gradient(120% 80% at 0% 0%, rgba(255, 255, 255, 0.5), transparent 60%),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='p'><feTurbulence type='fractalNoise' baseFrequency='.55' numOctaves='3'/><feColorMatrix values='0 0 0 0 .4  0 0 0 0 .35  0 0 0 0 .25  0 0 0 .09 0'/></filter><rect width='100%' height='100%' filter='url(%23p)'/></svg>");
+}
+
+/* ---------- Scroll progress (CSS scroll-driven; absent where unsupported) ---------- */
+.progress {
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  height: 2px;
+  width: 100%;
+  background: var(--color-crimson-bright);
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+}
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .progress {
+      animation: grow linear both;
+      animation-timeline: scroll(root);
+    }
+  }
+}
+@keyframes grow {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* ---------- Reveal on scroll (CSS view timeline; content always visible without it) ---------- */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      animation: reveal both var(--ease-out-file);
+      animation-timeline: view();
+      animation-range: entry 0% entry 40%;
+    }
+  }
+}
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+}
+
+/* ---------- Entrance (first paint only, short, never blocks clicks) ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  .enter {
+    animation: enter 700ms var(--ease-out-file) both;
+    animation-delay: calc(var(--i, 0) * 70ms);
+  }
+  .stamp-in {
+    animation: stamp 520ms cubic-bezier(0.3, 1.4, 0.5, 1) both;
+    animation-delay: 380ms;
+  }
+}
+@keyframes enter {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+}
+@keyframes stamp {
+  from {
+    opacity: 0;
+    transform: scale(1.6) rotate(-14deg);
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ---------- Mobile menu (popover API, no JS) ---------- */
+.menu-sheet {
+  inset: 0;
+  width: 100%;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  border: 0;
+  padding: 0;
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+.menu-sheet::backdrop {
+  background: rgba(0, 0, 0, 0.6);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .menu-sheet:popover-open {
+    animation: enter 280ms var(--ease-out-file);
+  }
+}
+
+/* ---------- Evidence board ---------- */
+.board-card {
+  transition:
+    transform 260ms var(--ease-out-file),
+    box-shadow 260ms var(--ease-out-file);
+  transform: rotate(var(--r, 0deg));
+}
+.board-card:hover,
+.board-card:focus-visible {
+  transform: rotate(0deg) translateY(-6px) scale(1.04);
+  box-shadow: 0 24px 40px -12px rgba(0, 0, 0, 0.7);
+  z-index: 5;
+}
+.board-card .clue {
+  opacity: 0;
+  transform: translateY(-4px);
+  transition:
+    opacity 200ms,
+    transform 200ms;
+  pointer-events: none;
+}
+.board-card:hover .clue,
+.board-card:focus-visible .clue {
+  opacity: 1;
+  transform: none;
+}
+.board-string {
+  stroke: var(--color-line);
+  transition:
+    stroke 220ms,
+    stroke-width 220ms;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .board-string {
+    stroke-dasharray: 1200;
+    stroke-dashoffset: 1200;
+    animation: draw 1400ms var(--ease-out-file) forwards;
+    animation-delay: calc(500ms + var(--i, 0) * 90ms);
+  }
+  .board-card {
+    animation: pin 600ms var(--ease-out-file) both;
+    animation-delay: calc(200ms + var(--i, 0) * 80ms);
+  }
+}
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes pin {
+  from {
+    opacity: 0;
+    transform: rotate(var(--r, 0deg)) translateY(-16px) scale(0.96);
+  }
+}
+
+/* Lamp: warm light that follows the pointer on the hero. Fine pointers only. */
+.lamp {
+  background: radial-gradient(
+    520px circle at var(--mx, 70%) var(--my, 35%),
+    rgba(214, 178, 120, 0.13),
+    transparent 70%
+  );
+}
+
+/* Hidden scrollbars for local horizontal scroll areas */
+.scroll-x {
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+@media print {
+  .no-print,
+  .grain {
+    display: none !important;
+  }
 }

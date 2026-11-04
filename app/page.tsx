@@ -1,69 +1,278 @@
-import Image from "next/image";
+import Link from "next/link";
+import { cases, evidenceLabel } from "@/content/cases";
+import { profile, skills } from "@/content/profile";
+import { EvidenceBoard } from "@/components/hero/evidence-board";
+import { Lamp } from "@/components/hero/lamp";
+import { SectionHead } from "@/components/section-head";
+import { ArrowRight } from "@/components/icons";
+import { siteUrl } from "@/content/site";
+
+// Three proof points for an SDE-first audience (PRD 6.1 B). Each links to its case.
+const strongest = [
+  {
+    slug: "nakhrali",
+    value: "100+ orders",
+    label: "processed on a live e-commerce platform I built and run as sole developer, with 100+ registered users.",
+    kind: "production" as const,
+    note: "Self-reported, Oct 2026",
+  },
+  {
+    slug: "idempotent-event-processor",
+    value: "18,000 / 18,000",
+    label: "unique payment events processed in 90 s on 3 workers, with 3.78 ms API p95 under duplicate-heavy load.",
+    kind: "local-benchmark" as const,
+    note: "Local load test, not production",
+  },
+  {
+    slug: "movielens",
+    value: "0.099 → 0.151",
+    label: "NDCG@10 against a Bayesian popularity baseline (1.53×), on 6,255 held-out users.",
+    kind: "offline-eval" as const,
+    note: "Chronological split",
+  },
+];
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: profile.name,
+  url: siteUrl,
+  jobTitle: profile.role,
+  email: `mailto:${profile.email}`,
+  sameAs: [profile.github, profile.linkedin],
+  alumniOf: ["Indian Institute of Technology Madras", "University Institute of Technology, RGPV"],
+};
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+
+      {/* ---------- Hero ---------- */}
+      <Lamp className="relative overflow-hidden border-b border-line">
+        <section aria-labelledby="hero-title" className="wrap grid min-h-[calc(100svh-64px)] items-center gap-12 py-12 lg:grid-cols-12 lg:gap-8 lg:py-16">
+          <div className="lg:col-span-7">
+            <p className="label enter text-paper-muted" style={{ "--i": 0 } as React.CSSProperties}>
+              Personal case archive <span className="text-crimson-bright">/</span> Software engineering &amp; machine learning
+            </p>
+            <h1
+              id="hero-title"
+              className="display enter mt-6 text-[clamp(60px,15.5vw,92px)] text-paper md:text-[clamp(92px,11.5vw,132px)] lg:text-[clamp(84px,8.6vw,148px)]"
+              style={{ "--i": 1 } as React.CSSProperties}
+            >
+              I notice the details.
+              <br />
+              <span className="text-paper-muted">I build the </span>
+              <span className="relative inline-block">
+                systems.
+                <span aria-hidden className="absolute -bottom-1 left-0 h-[0.06em] w-full bg-crimson-bright" />
+              </span>
+            </h1>
+            <p className="enter measure mt-8 text-[clamp(18px,1.5vw,21px)] leading-relaxed text-paper-muted" style={{ "--i": 2 } as React.CSSProperties}>
+              I&apos;m <span className="text-paper">Shubh Ghiya</span>, a developer interested in reliable backends, useful
+              developer tools and data-driven products. These are the systems I&apos;ve built, tested and shipped.
+            </p>
+            <div className="enter mt-10 flex flex-wrap items-center gap-3" style={{ "--i": 3 } as React.CSSProperties}>
+              <Link href="/case-files" className="btn btn-primary">
+                Open the case files <ArrowRight />
+              </Link>
+              <Link href="/resume" className="btn btn-ghost">
+                Examine my resume
+              </Link>
+              <Link href="/about" className="label link-underline ml-2 inline-flex min-h-11 items-center text-paper-muted hover:text-paper">
+                Who is Shubh?
+              </Link>
+            </div>
+            <dl className="label enter mt-12 grid max-w-md grid-cols-3 gap-4 border-t border-line pt-5 !text-[11px] text-ash" style={{ "--i": 4 } as React.CSSProperties}>
+              <div>
+                <dt>Subject</dt>
+                <dd className="mt-1 text-paper">Shubh Ghiya</dd>
+              </div>
+              <div>
+                <dt>Files</dt>
+                <dd className="mt-1 text-paper">07 + 01 sealed</dd>
+              </div>
+              <div>
+                <dt>Status</dt>
+                <dd className="mt-1 text-signal">Open</dd>
+              </div>
+            </dl>
+          </div>
+
+          <div className="hidden w-full max-w-[620px] md:mx-auto md:block lg:col-span-5 lg:max-w-none">
+            <EvidenceBoard />
+          </div>
+
+          {/* Phone: the board becomes a compact index of files (PRD 16) */}
+          <nav aria-label="Case files" className="md:hidden">
+            <p className="label mb-3 text-ash">Evidence on file</p>
+            <ol className="grid grid-cols-1 border-t border-line">
+              {cases.map((c) => (
+                <li key={c.slug} className="border-b border-line">
+                  <Link href={`/case-files/${c.slug}`} className="flex min-h-14 items-center gap-4 py-3">
+                    <span className="label text-ash">{c.number}</span>
+                    <span className="display flex-1 text-[24px] leading-none">{c.title}</span>
+                    <ArrowRight className="text-ash" />
+                  </Link>
+                </li>
+              ))}
+              <li className="border-b border-line">
+                <Link href="/contact" className="flex min-h-14 items-center gap-4 py-3 text-signal">
+                  <span className="label">08</span>
+                  <span className="display flex-1 text-[24px] leading-none">Red John · Contact</span>
+                  <ArrowRight />
+                </Link>
+              </li>
+            </ol>
+          </nav>
+        </section>
+        <p className="label wrap pointer-events-none absolute inset-x-0 bottom-5 hidden !text-[11px] text-ash lg:block" aria-hidden>
+          Scroll to examine the evidence ↓
+        </p>
+      </Lamp>
+
+      {/* ---------- A. The investigator's index ---------- */}
+      <section aria-labelledby="index-title" className="wrap py-24 md:py-32">
+        <SectionHead
+          id="index-title"
+          kicker="A · The investigator's index"
+          title="Seven files on the table"
+          intro="Production ownership first, then backend reliability, developer tooling, machine learning and AI. Each file opens a full case."
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+        <ol className="border-t border-line">
+          {cases.map((c) => (
+            <li key={c.slug} className="reveal border-b border-line">
+              <Link
+                href={`/case-files/${c.slug}`}
+                className="group grid grid-cols-[36px_minmax(0,1fr)_auto] items-center gap-x-4 gap-y-2 py-6 md:grid-cols-[64px_minmax(0,1.6fr)_minmax(0,1fr)_minmax(0,0.9fr)_24px] md:gap-x-8 md:py-7"
+              >
+                <span className="label col-start-1 row-start-1 text-ash transition-colors group-hover:text-signal">{c.number}</span>
+                <span className="display col-start-2 row-start-1 text-[clamp(30px,3.6vw,56px)] text-paper transition-transform duration-300 group-hover:translate-x-2">
+                  {c.title}
+                </span>
+                <span className="col-start-2 row-start-2 text-[14px] text-paper-muted md:col-start-3 md:row-start-1">
+                  {c.name}
+                  <span className="label mt-1 block !text-[10px] text-ash">{c.categories.join(" / ")}</span>
+                </span>
+                <span className="hidden text-[13px] leading-snug text-ash md:col-start-4 md:row-start-1 md:block">
+                  <span className="display block text-[28px] text-paper">{c.headline.value}</span>
+                  <span className="label !text-[10px]">{evidenceLabel[c.headline.kind]}</span>
+                </span>
+                <ArrowRight className="col-start-3 row-start-1 text-ash transition-colors group-hover:text-signal md:col-start-5" />
+              </Link>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      {/* ---------- B. The strongest evidence ---------- */}
+      <section aria-labelledby="evidence-title" className="overflow-x-clip border-y border-line bg-ink-soft">
+        <div className="wrap py-24 md:py-32">
+          <SectionHead
+            id="evidence-title"
+            kicker="B · The strongest evidence"
+            title="Three exhibits"
+            intro="Every number carries a label saying what kind of proof it is. A local benchmark is never presented as production."
+          />
+          <div className="grid gap-5 lg:grid-cols-3">
+            {strongest.map((s, i) => {
+              const c = cases.find((x) => x.slug === s.slug)!;
+              return (
+                <Link
+                  key={s.slug}
+                  href={`/case-files/${s.slug}`}
+                  className="paper reveal group relative flex flex-col p-6 transition-transform duration-300 hover:-translate-y-1 md:p-8"
+                  style={{ rotate: `${[-0.6, 0.4, -0.3][i]}deg` }}
+                >
+                  <span className="label flex justify-between !text-[11px] text-paper-ink-muted">
+                    <span>Exhibit {String.fromCharCode(65 + i)}</span>
+                    <span>Case {c.number}</span>
+                  </span>
+                  <span className="display mt-8 text-[clamp(44px,4.6vw,72px)] text-paper-ink">{s.value}</span>
+                  <span className="mt-3 text-[15px] leading-relaxed text-paper-ink-muted">{s.label}</span>
+                  <span className="mt-8 flex items-end justify-between gap-4 border-t border-paper-ink/15 pt-4">
+                    <span>
+                      <span className="stamp -rotate-2 text-crimson">{evidenceLabel[s.kind]}</span>
+                      <span className="label mt-2 block !text-[10px] text-paper-ink-muted">{s.note}</span>
+                    </span>
+                    <span className="label inline-flex items-center gap-2 text-paper-ink group-hover:text-crimson">
+                      Open case <ArrowRight />
+                    </span>
+                  </span>
+                </Link>
+              );
+            })}
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      {/* ---------- C. What I work with ---------- */}
+      <section aria-labelledby="skills-title" className="wrap py-24 md:py-32">
+        <SectionHead
+          id="skills-title"
+          kicker="C · What I work with"
+          title="Tools of the trade"
+          intro="Only tools that appear in the case files. If it is listed here, there is a project you can open that uses it."
+        />
+        <div className="grid border-t border-l border-line sm:grid-cols-2 lg:grid-cols-4">
+          {skills.map((g) => (
+            <div key={g.group} className="reveal border-r border-b border-line p-6">
+              <h3 className="label text-brass">{g.group}</h3>
+              <ul className="mt-5 space-y-2.5 text-[16px] text-paper">
+                {g.items.map((s) => (
+                  <li key={s} className="flex items-baseline gap-3">
+                    <span aria-hidden className="h-px w-3 shrink-0 translate-y-[-4px] bg-line" />
+                    {s}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
-      </main>
-    </div>
+      </section>
+
+      {/* ---------- D. Short profile ---------- */}
+      <section aria-labelledby="profile-title" className="border-t border-line">
+        <div className="wrap grid gap-10 py-24 md:grid-cols-12 md:py-32">
+          <div className="md:col-span-4">
+            <p className="label text-signal">D · Profile</p>
+            <h2 id="profile-title" className="display mt-3 text-[clamp(44px,6vw,88px)]">
+              The investigator
+            </h2>
+          </div>
+          <div className="reveal md:col-span-7 md:col-start-6">
+            <p className="text-[clamp(20px,2vw,26px)] leading-snug text-paper">
+              Final-year dual-degree student at <span className="text-brass">IIT Madras</span> (B.S. Data Science &amp;
+              Applications) and <span className="text-brass">UIT RGPV</span> (B.Tech. Computer Science), graduating in 2027.
+            </p>
+            <p className="mt-6 text-[17px] leading-relaxed text-paper-muted">
+              I like problems where being slightly wrong is expensive: payments that must not double-charge, bookings that
+              must not collide, metrics that must not leak. {profile.seeking}
+            </p>
+            <Link href="/about" className="label link-underline mt-8 inline-flex min-h-11 items-center gap-2 text-paper">
+              Behind the evidence <ArrowRight />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ---------- E. Closing CTA ---------- */}
+      <section aria-labelledby="close-title" className="relative overflow-hidden border-t border-line bg-[radial-gradient(80%_120%_at_50%_120%,rgba(165,30,50,.28),transparent_70%)]">
+        <div className="wrap py-28 text-center md:py-40">
+          <p className="label text-ash">End of the briefing</p>
+          <h2 id="close-title" className="display reveal mx-auto mt-5 max-w-[14ch] text-[clamp(52px,8vw,128px)]">
+            The files are open. The next move is yours.
+          </h2>
+          <div className="mt-10 flex flex-wrap justify-center gap-3">
+            <Link href="/case-files" className="btn btn-paper">
+              Open the case files <ArrowRight />
+            </Link>
+            <Link href="/contact" className="btn btn-ghost">
+              Make contact
+            </Link>
+          </div>
+        </div>
+      </section>
+    </>
   );
 }
