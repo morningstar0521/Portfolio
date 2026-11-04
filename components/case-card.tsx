@@ -18,7 +18,7 @@ export function CaseCard({ c, featured = false }: { c: CaseFile; featured?: bool
   const live = c.links.find((l) => l.kind === "live");
   const source = c.links.find((l) => l.kind === "source");
   return (
-    <article className="group relative flex h-full flex-col border border-line bg-sunk transition-colors hover:border-faint">
+    <article className="case-card group relative flex h-full flex-col border border-line bg-sunk transition-colors hover:border-faint">
       {/* File tab */}
       <div className="flex items-stretch justify-between border-b border-line">
         <span className="label flex items-center bg-folder px-3 py-2 !text-[11px] text-tag-ink">Case {c.number}</span>
@@ -28,13 +28,14 @@ export function CaseCard({ c, featured = false }: { c: CaseFile; featured?: bool
       <div className="flex flex-1 flex-col p-5 md:p-6">
         <div className="flex items-start justify-between gap-4">
           <h3 className={`display text-fg ${featured ? "text-[clamp(40px,4.4vw,68px)]" : "text-[clamp(34px,3vw,46px)]"}`}>
-            <Link href={`/case-files/${c.slug}`} className="after:absolute after:inset-0 focus-visible:outline-none">
+            <Link href={`/case-files/${c.slug}`} className="case-link after:absolute after:inset-0">
               {c.title}
             </Link>
           </h3>
           <span className={`stamp mt-1 shrink-0 ${c.status === "LIVE" ? "text-success" : "text-amber"}`}>{c.status}</span>
         </div>
         <p className="label mt-2 text-muted">{c.name}</p>
+        {c.award && <span className="stamp mt-4 -rotate-2 self-start text-crimson">{c.award}</span>}
         <p className="mt-4 max-w-[52ch] text-[15px] leading-relaxed text-muted">{c.summary}</p>
 
         <div className="mt-6 border-l-2 border-crimson-bright pl-4">

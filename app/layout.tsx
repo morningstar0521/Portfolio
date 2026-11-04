@@ -64,7 +64,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         {/* Applies a saved dark choice before first paint, so there is no flash of the light theme. */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `try{if(localStorage.getItem("theme")==="dark")document.documentElement.dataset.theme="dark"}catch(e){}`,
+            __html: `try{if(localStorage.getItem("theme")==="dark"){document.documentElement.dataset.theme="dark";addEventListener("DOMContentLoaded",function(){var m=document.querySelector('meta[name="theme-color"]');if(m)m.content="#120708"})}}catch(e){}`,
           }}
         />
       </head>

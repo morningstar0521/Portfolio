@@ -294,7 +294,7 @@ function VentureLens() {
             <div
               key={d}
               className="flex flex-col justify-end border-r border-ground px-2 pb-2"
-              style={{ width: `${w}%`, background: `rgba(197,43,66,${0.95 - i * 0.17})` }}
+              style={{ width: `${w}%`, background: `color-mix(in srgb, var(--color-crimson-bright) ${95 - i * 17}%, transparent)` }}
             >
               <span className="font-mono text-[12px] text-fg">{w}%</span>
             </div>

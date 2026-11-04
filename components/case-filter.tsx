@@ -46,7 +46,7 @@ export function CaseFilter() {
       ) : (
         <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-12">
           {shown.map((c) => (
-            <div key={c.slug} className={active === "ALL" ? span[cases.indexOf(c)] : "lg:col-span-6"}>
+            <div key={c.slug} className={active === "ALL" ? (span[cases.indexOf(c)] ?? "lg:col-span-6") : "lg:col-span-6"}>
               <CaseCard c={c} featured={active === "ALL" && cases.indexOf(c) < 2} />
             </div>
           ))}

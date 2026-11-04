@@ -1,12 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { Copy } from "./icons";
 
 // Copies text and announces it. If the clipboard is blocked, selects the text so the visitor can copy it manually.
 export function CopyButton({ text, label, className = "" }: { text: string; label: string; className?: string }) {
   const [state, setState] = useState<"idle" | "done" | "manual">("idle");
-  const id = `copy-${text.replace(/\W/g, "")}`;
+  const id = useId();
+  const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
+  useEffect(() => () => clearTimeout(timer.current), []);
 
   async function copy() {
     try {
@@ -17,7 +19,8 @@ export function CopyButton({ text, label, className = "" }: { text: string; labe
       if (el) window.getSelection()?.selectAllChildren(el);
       setState("manual");
     }
-    setTimeout(() => setState("idle"), 2500);
+    clearTimeout(timer.current);
+    timer.current = setTimeout(() => setState("idle"), 2500);
   }
 
   return (

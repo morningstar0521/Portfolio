@@ -16,11 +16,11 @@ export default function ContactPage() {
   return (
     <section
       aria-labelledby="rj-title"
-      className="night relative isolate min-h-[calc(100svh-64px)] overflow-hidden bg-ground bg-[radial-gradient(70%_60%_at_75%_45%,rgba(165,30,50,.45),transparent_70%),radial-gradient(60%_50%_at_10%_100%,rgba(165,30,50,.18),transparent_70%)]"
+      className="night relative isolate min-h-[calc(100svh-72px)] overflow-hidden bg-ground bg-[radial-gradient(70%_60%_at_75%_45%,rgba(165,30,50,.45),transparent_70%),radial-gradient(60%_50%_at_10%_100%,rgba(165,30,50,.18),transparent_70%)]"
     >
       <Thumbprint id="tp-contact" className="pointer-events-none absolute top-[46%] right-[-38%] -z-10 h-[62%] -translate-y-1/2 rotate-[-10deg] opacity-35 md:right-[-14%] md:opacity-45 lg:right-[-1%] lg:h-[74%] lg:opacity-60" />
 
-      <div className="wrap relative grid min-h-[calc(100svh-64px)] items-center py-16 md:py-24">
+      <div className="wrap relative grid min-h-[calc(100svh-72px)] items-center py-16 md:py-24">
         <div className="max-w-3xl">
           <p className="label enter text-alert">Case 08 · The last file</p>
           <h1 id="rj-title" className="display enter mt-6 whitespace-nowrap text-[clamp(68px,12vw,184px)] text-fg" style={{ "--i": 1 } as React.CSSProperties}>

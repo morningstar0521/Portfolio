@@ -21,7 +21,7 @@ const focus = [
 
 export default function AboutPage() {
   return (
-    <div className="wrap py-16 md:py-24">
+    <div className="wrap overflow-x-clip py-16 md:py-24">
       <header className="grid gap-8 border-b border-line pb-14 md:grid-cols-12">
         <div className="md:col-span-7">
           <p className="label enter text-alert">Subject profile</p>

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { cases } from "@/content/cases";
 import { ArrowRight } from "./icons";
 
@@ -16,10 +16,21 @@ const roles = [
 export function CardTrick() {
   const [pick, setPick] = useState<string | null>(null);
   const chosen = roles.find((r) => r.id === pick);
+  // Picking disables the other cards, so move focus to the result instead of dropping it on <body>.
+  const result = useRef<HTMLDivElement>(null);
+  const deck = useRef<HTMLDivElement>(null);
+  function choose(id: string) {
+    setPick(id);
+    requestAnimationFrame(() => result.current?.focus());
+  }
+  function shuffle() {
+    setPick(null);
+    requestAnimationFrame(() => deck.current?.querySelector("button")?.focus());
+  }
 
   return (
     <div>
-      <div className="mx-auto grid max-w-[960px] grid-cols-2 gap-4 md:grid-cols-4" role="group" aria-label="Pick the role you are hiring for">
+      <div ref={deck} className="mx-auto grid max-w-[960px] grid-cols-2 gap-4 md:grid-cols-4" role="group" aria-label="Pick the role you are hiring for">
         {roles.map((r, i) => {
           const flipped = pick === r.id;
           return (
@@ -27,7 +38,7 @@ export function CardTrick() {
               <div className="inner">
                 <button
                   type="button"
-                  onClick={() => setPick(r.id)}
+                  onClick={() => choose(r.id)}
                   aria-pressed={flipped}
                   disabled={!!pick && !flipped}
                   className="front flex aspect-[5/7] flex-col justify-between border border-line bg-card p-4 text-left shadow-[0_14px_24px_-16px_rgba(60,30,5,.6)] transition-transform duration-300 hover:-translate-y-1.5 disabled:opacity-40 disabled:hover:translate-y-0"
@@ -55,7 +66,7 @@ export function CardTrick() {
 
       <div aria-live="polite" className="mt-10 min-h-[1px]">
         {chosen && (
-          <div className="enter grid gap-6 border-t border-line pt-8 md:grid-cols-12">
+          <div ref={result} tabIndex={-1} aria-label={`Recommended case files for ${chosen.label}`} className="enter grid gap-6 border-t border-line pt-8 md:grid-cols-12">
             <p className="hand text-[22px] leading-snug text-muted md:col-span-4">
               Wrote it down before you chose. <span className="text-faint">(I didn&apos;t. But it works more often than you&apos;d think.)</span>
             </p>
@@ -75,7 +86,7 @@ export function CardTrick() {
                 );
               })}
               <li>
-                <button type="button" onClick={() => setPick(null)} className="label inline-flex min-h-11 items-center gap-2 text-fg hover:text-crimson">
+                <button type="button" onClick={shuffle} className="label inline-flex min-h-11 items-center gap-2 text-fg hover:text-crimson">
                   Shuffle and pick again <ArrowRight />
                 </button>
               </li>

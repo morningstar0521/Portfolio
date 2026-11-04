@@ -52,7 +52,6 @@
   --color-crimson: #e0566b; /* lifted so crimson text reads on the dark ground */
   --color-crimson-bright: #ec6f82;
   --color-success: #8fbf93;
-  --color-line: #4a2a28;
 }
 
 html {
@@ -77,6 +76,19 @@ body {
   outline: 2px solid var(--color-crimson);
   outline-offset: 3px;
 }
+/* Case cards: the whole card is the link target, so the ring goes on the card. */
+.case-link:focus-visible {
+  outline: none;
+}
+.case-card:has(.case-link:focus-visible) {
+  outline: 2px solid var(--color-alert);
+  outline-offset: 3px;
+}
+[data-theme="dark"] .theme-sun,
+:root:not([data-theme="dark"]) .theme-moon {
+  display: none;
+}
+
 [data-theme="dark"] :focus-visible,
 .night :focus-visible {
   outline-color: var(--color-alert);

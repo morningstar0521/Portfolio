@@ -60,6 +60,7 @@ export type CaseFile = {
   hero?: Shot;
   shots?: Shot[];
   lastVerified: string;
+  award?: string;
 };
 
 const GH = "https://github.com/morningstar0521";
@@ -356,6 +357,7 @@ export const cases: CaseFile[] = [
     title: "One Space. One Booking.",
     name: "QuickPark",
     classification: "Full-stack · backend · Best Project Award",
+    award: "Best Project · IIT Madras",
     categories: ["FULL-STACK", "BACKEND"],
     status: "LIVE",
     period: "2025",

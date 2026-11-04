@@ -77,6 +77,7 @@ async function CaseBody({ params }: Pick<PageProps<"/case-files/[slug]">, "param
               Case {c.number} of 0{cases.length}
             </span>
             <span className={`stamp stamp-in ml-2 -rotate-3 ${c.status === "LIVE" ? "text-success" : "text-amber"}`}>{c.status}</span>
+            {c.award && <span className="stamp stamp-in rotate-2 text-crimson">{c.award}</span>}
           </div>
 
           <h1 className="display enter mt-8 max-w-[16ch] text-[clamp(52px,8vw,124px)]" style={{ "--i": 1 } as React.CSSProperties}>

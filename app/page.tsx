@@ -48,6 +48,10 @@ const jsonLd = {
   url: siteUrl,
   jobTitle: profile.role,
   email: `mailto:${profile.email}`,
+  image: `${siteUrl}${portrait.src}`,
+  description: profile.positioning,
+  address: { "@type": "PostalAddress", addressLocality: "Bhopal", addressCountry: "IN" },
+  knowsAbout: ["Backend engineering", "Full-stack web development", "Machine learning", "Payment systems"],
   sameAs: [profile.github, profile.linkedin],
   alumniOf: ["Indian Institute of Technology Madras", "University Institute of Technology, RGPV"],
 };
@@ -60,7 +64,7 @@ export default function Home() {
       {/* ---------- Hero ---------- */}
       <Lamp className="relative overflow-hidden border-b border-line">
         <div aria-hidden className="blinds absolute inset-0" />
-        <section aria-labelledby="hero-title" className="wrap relative grid min-h-[calc(100svh-64px)] items-center gap-12 py-12 lg:grid-cols-12 lg:gap-8 lg:py-16">
+        <section aria-labelledby="hero-title" className="wrap relative grid min-h-[calc(100svh-72px)] items-center gap-12 py-12 lg:grid-cols-12 lg:gap-8 lg:py-16">
           <div className="lg:col-span-7">
             <p className="label enter flex flex-wrap items-center gap-x-3 gap-y-1 text-muted" style={{ "--i": 0 } as React.CSSProperties}>
               <span className="inline-flex items-center gap-2 text-fg">

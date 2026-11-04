@@ -47,3 +47,6 @@ next-env.d.ts
 # root-level drop files
 /*.pdf
 
+
+# local QA mirrors and sync archives
+/.qa/

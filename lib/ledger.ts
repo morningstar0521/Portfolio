@@ -16,8 +16,12 @@ export function limited(req: Request, max = 40, windowMs = 60_000) {
   const now = Date.now();
   const recent = (hits.get(ip) ?? []).filter((t) => now - t < windowMs);
   recent.push(now);
+  hits.delete(ip); // re-insert so Map order is least-recently-seen first
   hits.set(ip, recent);
-  if (hits.size > 5000) hits.clear();
+  for (const oldest of hits.keys()) {
+    if (hits.size <= 5000) break;
+    hits.delete(oldest);
+  }
   return recent.length > max;
 }
 

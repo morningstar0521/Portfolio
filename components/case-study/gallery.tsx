@@ -32,7 +32,7 @@ export function Gallery({ shots, name }: { shots: Shot[]; name: string }) {
                   alt={shot.alt}
                   width={shot.width}
                   height={shot.height}
-                  sizes={n === 0 ? "(min-width: 1024px) 900px, 100vw" : "(min-width: 1024px) 440px, 100vw"}
+                  sizes={n === 0 ? "(min-width: 1024px) 900px, 100vw" : "(min-width: 1024px) 440px, (min-width: 768px) 50vw, 100vw"}
                   className="h-auto w-full"
                 />
               </button>

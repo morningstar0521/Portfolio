@@ -3,6 +3,7 @@ import { cases } from "@/content/cases";
 import { siteUrl } from "@/content/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const routes = ["", "/case-files", "/about", "/contact", ...cases.map((c) => `/case-files/${c.slug}`)];
-  return routes.map((r) => ({ url: `${siteUrl}${r}` }));
+  const pages = ["", "/case-files", "/about", "/contact"].map((r) => ({ url: `${siteUrl}${r}` }));
+  const files = cases.map((c) => ({ url: `${siteUrl}/case-files/${c.slug}`, lastModified: c.lastVerified }));
+  return [...pages, ...files];
 }
