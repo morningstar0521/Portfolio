@@ -30,7 +30,7 @@ export function NavLinks({ mobile = false }: { mobile?: boolean }) {
         aria-current={active ? "page" : undefined}
         className="folder-tab label relative -mb-px inline-flex h-11 items-center gap-2 px-3.5 whitespace-nowrap lg:px-5 text-muted transition-colors hover:text-fg aria-[current=page]:text-tag-ink"
       >
-        <span className="hidden !text-[10px] opacity-60 lg:inline">0{i + 1}</span>
+        <span className="hidden !text-[10px] text-faint lg:inline [[aria-current=page]>&]:text-tag-muted">0{i + 1}</span>
         {item.label}
       </Link>
     );

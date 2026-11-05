@@ -7,10 +7,10 @@ export function SiteHeader() {
   return (
     <header className="site-header no-print sticky top-0 z-50 border-b border-line bg-ground/90 backdrop-blur-md">
       <div className="header-row wrap flex items-stretch justify-between gap-6">
-        <Link href="/" className="group flex items-center gap-3 self-center" aria-label="Shubh Ghiya, home">
+        <Link href="/" className="group flex items-center gap-3 self-center">
           <Mark className="h-9 w-9 shrink-0 text-fg transition-colors group-hover:text-alert" />
           {/* Wordmark: tracked monospace capitals, like a typed file label */}
-          <span className="hidden flex-col sm:flex md:hidden lg:flex">
+          <span className="flex flex-col max-sm:sr-only md:max-lg:sr-only">
             <span className="font-mono text-[15px] leading-none font-medium tracking-[0.3em] whitespace-nowrap text-fg uppercase">Shubh Ghiya</span>
             <span className="label mt-1.5 hidden !text-[9.5px] !tracking-[0.22em] whitespace-nowrap text-faint xl:block">Software engineer · case archive</span>
           </span>

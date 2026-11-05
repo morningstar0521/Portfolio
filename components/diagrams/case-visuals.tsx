@@ -138,7 +138,7 @@ function MovieLens() {
           />
         </Panel>
         <Panel title="Latency · local, warm, in-process benchmark" note="Apple M1 Pro, 500 calls. Not hosted or Hugging Face Space latency.">
-          <div className="scroll-x">
+          <div className="scroll-x" tabIndex={0} role="region" aria-label="Recommendation latency table (scrolls sideways)">
             <table className="w-full min-w-[320px] text-left text-[14px]">
               <caption className="sr-only">Recommendation latency in milliseconds</caption>
               <thead className="label !text-[11px] text-faint">

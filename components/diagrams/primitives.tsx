@@ -10,7 +10,7 @@ export function Flow({ steps, label }: { steps: Step[]; label: string }) {
           <div
             className={`flex-1 border p-4 ${s.accent ? "border-crimson-bright bg-crimson/10" : "border-line bg-ground"}`}
           >
-            <p className="label !text-[10px] text-faint">Step {String(i + 1).padStart(2, "0")}</p>
+            <p className={`label !text-[10px] ${s.accent ? "text-muted" : "text-faint"}`}>Step {String(i + 1).padStart(2, "0")}</p>
             <p className="mt-1.5 text-[15px] font-semibold leading-snug text-fg">{s.title}</p>
             {s.sub && <p className="mt-1 text-[13px] leading-snug text-muted">{s.sub}</p>}
           </div>

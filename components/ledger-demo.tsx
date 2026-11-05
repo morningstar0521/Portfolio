@@ -260,7 +260,7 @@ export function LedgerDemo() {
 
         <div className="border border-line bg-card">
           <p className="label border-b border-line px-4 py-3 !text-[11px] text-faint">Interrogation log · newest first</p>
-          <div className="scroll-x max-h-[340px] overflow-y-auto">
+          <div className="scroll-x max-h-[340px] overflow-y-auto" tabIndex={0} role="region" aria-label="Interrogation log (scrollable)">
             <table className="w-full min-w-[560px] text-left text-[13px]">
               <thead className="label sticky top-0 bg-card !text-[10px] text-faint">
                 <tr>

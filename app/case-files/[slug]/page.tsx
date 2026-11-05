@@ -19,7 +19,8 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps<"/case-files/[slug]">): Promise<Metadata> {
   const c = getCase((await params).slug);
-  if (!c) return {};
+  // Metadata is resolved before the page streams, so this is where an unknown slug can still answer 404.
+  if (!c) notFound();
   return {
     title: { absolute: `${c.name} — Case ${c.number} | Shubh Ghiya` },
     description: c.summary,
