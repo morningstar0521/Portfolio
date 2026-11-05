@@ -70,8 +70,7 @@ export default function AboutPage() {
         <div className="enter md:col-span-5 md:pt-6" style={{ "--i": 2 } as React.CSSProperties}>
           <PinnedPhoto shot={portrait} priority sizes="(min-width: 768px) 300px, 70vw" className="mb-10 w-[min(300px,70vw)] -rotate-2" />
           <p className="text-[clamp(19px,1.8vw,23px)] leading-relaxed text-fg">
-            I&apos;m the sole developer of a live e-commerce platform, and I like problems where being slightly wrong is
-            expensive.
+            I&apos;m the sole developer of a live e-commerce platform: I write it, deploy it and fix it when it breaks.
           </p>
           <p className="mt-4 text-[17px] leading-relaxed text-muted">{profile.positioning}</p>
         </div>

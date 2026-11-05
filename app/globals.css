@@ -88,6 +88,13 @@ body {
 :root:not([data-theme="dark"]) .theme-moon {
   display: none;
 }
+/* The contact page is always night, so its toggle shows the moon whatever the saved theme. */
+:root:has(.night) .theme-sun {
+  display: none;
+}
+:root:has(.night) .theme-moon {
+  display: inline;
+}
 
 [data-theme="dark"] :focus-visible,
 .night :focus-visible {

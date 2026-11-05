@@ -1,24 +1,32 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+
+// Pages that are always dark by design (the Red John contact page); the toggle can't change them.
+const ALWAYS_NIGHT = ["/contact"];
 
 // Light by default. The choice is remembered per browser; the inline script in layout applies it before paint.
 export function ThemeToggle({ className = "" }: { className?: string }) {
   const [dark, setDark] = useState(false);
+  const night = ALWAYS_NIGHT.includes(usePathname());
+
   // The header renders two toggles (desktop and phone); both follow the <html> attribute.
   useEffect(() => {
-    const sync = () => setDark(document.documentElement.dataset.theme === "dark");
+    const sync = () => {
+      const isDark = document.documentElement.dataset.theme === "dark";
+      setDark(isDark);
+      document.querySelector('meta[name="theme-color"]')?.setAttribute("content", isDark || night ? "#120708" : "#f4ead5");
+    };
     sync();
     window.addEventListener("themechange", sync);
     return () => window.removeEventListener("themechange", sync);
-  }, []);
+  }, [night]);
 
   function toggle() {
     const next = !dark;
-    setDark(next);
     if (next) document.documentElement.dataset.theme = "dark";
     else delete document.documentElement.dataset.theme;
-    document.querySelector('meta[name="theme-color"]')?.setAttribute("content", next ? "#120708" : "#f4ead5");
     try {
       localStorage.setItem("theme", next ? "dark" : "light");
     } catch {}
@@ -29,10 +37,11 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
     <button
       type="button"
       onClick={toggle}
-      aria-pressed={dark}
+      disabled={night}
+      aria-pressed={night || dark}
       aria-label="Dark theme"
-      title={dark ? "Lights on" : "Lights off"}
-      className={`inline-flex h-11 w-11 items-center justify-center border border-line text-muted transition-colors hover:border-fg hover:text-fg ${className}`}
+      title={night ? "This page is always at night" : dark ? "Lights on" : "Lights off"}
+      className={`inline-flex h-11 w-11 items-center justify-center border border-line text-muted transition-colors hover:border-fg hover:text-fg disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:border-line disabled:hover:text-muted ${className}`}
     >
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" aria-hidden>
         {/* Both icons render; CSS picks one from <html data-theme>, so there is no flash before hydration. */}
