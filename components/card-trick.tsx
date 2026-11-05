@@ -34,7 +34,7 @@ export function CardTrick() {
         {roles.map((r, i) => {
           const flipped = pick === r.id;
           return (
-            <div key={r.id} className="trick-card" data-flipped={flipped}>
+            <div key={r.id} className="trick-card deal" data-flipped={flipped} style={{ "--i": i } as React.CSSProperties}>
               <div className="inner">
                 <button
                   type="button"

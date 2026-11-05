@@ -60,7 +60,7 @@ export function EvidenceBoard() {
 
       {/* Subject: the pinned photo every case board starts with */}
       <figure
-        className="absolute w-[27%] -translate-x-1/2 -translate-y-1/2 rotate-[-2deg] bg-paper p-1.5 pb-8 shadow-[0_20px_34px_-14px_rgba(40,20,5,.75)] xl:p-2 xl:pb-10"
+        className="board-subject absolute w-[27%] -translate-x-1/2 -translate-y-1/2 rotate-[-2deg] bg-paper p-1.5 pb-8 shadow-[0_20px_34px_-14px_rgba(40,20,5,.75)] xl:p-2 xl:pb-10"
         style={{ left: `${subject.x}%`, top: `${subject.y}%` }}
       >
         <Pin />

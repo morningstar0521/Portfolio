@@ -33,6 +33,8 @@
 :root {
   color-scheme: light;
   --gutter: clamp(16px, 4vw, 56px);
+  /* Lifted paper: a warm drop shadow by day, a red lamp glow after dark. */
+  --shadow-lift: 0 30px 40px -24px rgba(60, 30, 5, 0.55);
 }
 
 /* Lights out: the final chapter. Redefines the palette for the whole page it appears on. */
@@ -52,6 +54,7 @@
   --color-crimson: #e0566b; /* lifted so crimson text reads on the dark ground */
   --color-crimson-bright: #ec6f82;
   --color-success: #8fbf93;
+  --shadow-lift: 0 30px 50px -22px rgba(0, 0, 0, 0.85), 0 0 46px -12px rgba(236, 111, 130, 0.45);
 }
 
 html {
@@ -88,9 +91,7 @@ body {
 :root:not([data-theme="dark"]) .theme-moon {
   display: none;
 }
-/* The contact page is always night, so its toggle shows the moon whatever the saved theme.
-   Next keeps visited pages mounted but hidden (display: none) for back/forward, so these
-   rules only count a .night page that is actually visible. */
+/* The contact page is always night, so its toggle shows the moon whatever the saved theme. */
 :root:has(.night:not([style*="display: none"], [style*="display: none"] *)) .theme-sun {
   display: none;
 }
@@ -205,7 +206,8 @@ body {
     background-color 180ms var(--ease-out-file),
     color 180ms var(--ease-out-file),
     border-color 180ms var(--ease-out-file),
-    transform 180ms var(--ease-out-file);
+    translate 180ms var(--ease-out-file),
+    box-shadow 180ms var(--ease-out-file);
 }
 .btn svg {
   transition: transform 180ms var(--ease-out-file);
@@ -561,6 +563,297 @@ body {
 .scroll-x {
   overflow-x: auto;
   scrollbar-width: thin;
+}
+
+/* ---------- Motion v3: hover polish + scroll scenes (CSS only) ----------
+   Hover moves only on real pointers; colour changes stay for everyone.
+   Scroll scenes use CSS scroll/view timelines and are skipped where unsupported
+   or when the visitor prefers reduced motion. Entrance keyframes animate `transform`;
+   hovers use the separate `translate`/`rotate`/`scale` properties so the two never fight. */
+
+/* Buttons: ghost fills with ink from the left; all buttons lift a little. */
+.btn-ghost {
+  background: linear-gradient(var(--color-fg), var(--color-fg)) no-repeat 0 100% / 0% 100%;
+  transition:
+    background-size 320ms var(--ease-out-file),
+    color 220ms var(--ease-out-file),
+    border-color 180ms var(--ease-out-file),
+    translate 180ms var(--ease-out-file),
+    box-shadow 180ms var(--ease-out-file);
+}
+.btn-ghost:hover {
+  background-size: 100% 100%;
+  color: var(--color-ground);
+}
+
+/* Proof figures: a crimson rule draws under the number. */
+.proof-value {
+  background: linear-gradient(var(--color-crimson), var(--color-crimson)) no-repeat 0 100% / 0% 1.5px;
+  padding-bottom: 4px;
+  transition:
+    background-size 360ms var(--ease-out-file),
+    color 180ms;
+}
+.group:hover .proof-value,
+.group:focus-visible .proof-value {
+  background-size: 100% 1.5px;
+}
+
+/* Index rows: a red thread runs along the bottom of the hovered file. */
+.index-row::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 -1px 0;
+  height: 1px;
+  background: var(--color-crimson-bright);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 420ms var(--ease-out-file);
+}
+.index-row:hover::after,
+.index-row:focus-visible::after {
+  transform: scaleX(1);
+}
+
+/* Index rows become manila files: the folder colour sweeps in, a tab rises with the call to action.
+   Mouse: on hover. Touch: as the row passes the middle of the screen (a lighter fill, so text needs no swap). */
+.index-row {
+  background: linear-gradient(var(--color-folder), var(--color-folder)) no-repeat 0 0 / 0% 100%;
+  transition: background-size 420ms var(--ease-out-file);
+}
+.index-row * {
+  transition-property: color, translate, transform;
+  transition-duration: 220ms;
+}
+.index-tab {
+  position: absolute;
+  left: 0;
+  bottom: 100%;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 6px 18px 5px;
+  font-size: 10px !important;
+  background: var(--color-folder);
+  color: var(--color-tag-ink);
+  clip-path: polygon(8px 0, calc(100% - 8px) 0, 100% 100%, 0 100%);
+  box-shadow: inset 0 2px 0 #9e1b2c;
+  opacity: 0;
+  translate: 0 6px;
+  pointer-events: none;
+  transition:
+    opacity 220ms var(--ease-out-file),
+    translate 220ms var(--ease-out-file);
+}
+@media (hover: hover) {
+  .index-row:hover,
+  .index-row:focus-visible {
+    background-size: 100% 100%;
+    /* Paper stays light in both themes, so the text switches to folder ink. */
+    --color-fg: var(--color-tag-ink);
+    --color-muted: var(--color-tag-muted);
+    --color-faint: var(--color-tag-muted);
+    --color-alert: #9e1b2c;
+    --color-crimson: #9e1b2c;
+  }
+  .index-row:hover .index-tab,
+  .index-row:focus-visible .index-tab {
+    opacity: 1;
+    translate: 0 0;
+    transition-delay: 120ms;
+  }
+}
+@media (hover: none) {
+  .index-row {
+    background-image: linear-gradient(
+      color-mix(in oklab, var(--color-folder) 32%, transparent),
+      color-mix(in oklab, var(--color-folder) 32%, transparent)
+    );
+  }
+}
+@supports (animation-timeline: view()) {
+  @media (hover: none) and (prefers-reduced-motion: no-preference) {
+    .index-item {
+      view-timeline: --row block;
+    }
+    .index-row {
+      animation: row-scan linear both;
+      animation-timeline: --row;
+    }
+    .index-tab {
+      animation: tab-scan linear both;
+      animation-timeline: --row;
+    }
+  }
+}
+/* Only the row nearest the middle of the screen is open; neighbours stay closed. */
+@keyframes row-scan {
+  0%, 36% { background-size: 0% 100%; }
+  43%, 57% { background-size: 100% 100%; }
+  64%, 100% { background-size: 0% 100%; }
+}
+@keyframes tab-scan {
+  0%, 41% { opacity: 0; translate: 0 6px; }
+  45%, 55% { opacity: 1; translate: 0 0; }
+  59%, 100% { opacity: 0; translate: 0 6px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .index-row,
+  .index-row *,
+  .index-tab {
+    transition: none;
+  }
+}
+
+/* Tools list: the dash stretches and the tool name warms up. */
+.skill-item {
+  transition: color 180ms;
+}
+.skill-item > .skill-dash {
+  transform-origin: left;
+  transition:
+    scale 260ms var(--ease-out-file),
+    background-color 180ms;
+}
+.skill-item:hover {
+  color: var(--color-crimson);
+}
+.skill-item:hover > .skill-dash {
+  scale: 2.2 1;
+  background-color: var(--color-crimson);
+}
+
+/* Exhibits (manila folders) and pinned photos: pick them up off the desk. */
+.exhibit,
+.pinned {
+  transition:
+    translate 300ms var(--ease-out-file),
+    rotate 300ms var(--ease-out-file),
+    box-shadow 300ms var(--ease-out-file);
+}
+.exhibit {
+  rotate: var(--r, 0deg);
+}
+.exhibit:hover,
+.exhibit:focus-visible {
+  box-shadow: var(--shadow-lift);
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .btn:hover {
+    translate: 0 -2px;
+  }
+  .btn-primary:hover,
+  .btn-fg:hover {
+    box-shadow: var(--shadow-lift);
+  }
+  .exhibit:hover,
+  .exhibit:focus-visible {
+    translate: 0 -8px;
+    rotate: 0deg;
+  }
+  .pinned:hover {
+    translate: 0 -6px;
+    rotate: 0deg;
+    box-shadow: var(--shadow-lift);
+  }
+}
+
+/* Hero: the subject photo is pinned last, after the notes land. */
+@media (prefers-reduced-motion: no-preference) {
+  .board-subject {
+    animation: subject-pin 700ms cubic-bezier(0.3, 1.3, 0.5, 1) both;
+    animation-delay: 900ms;
+  }
+}
+@keyframes subject-pin {
+  from {
+    opacity: 0;
+    transform: scale(1.18) rotate(-6deg);
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    /* Hero: as you scroll away, the board sinks back and the copy drifts up. */
+    .hero-board {
+      animation: hero-board linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 90vh;
+    }
+    .hero-copy {
+      animation: hero-copy linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 90vh;
+    }
+
+    /* Section titles: wiped onto the page like a label being written. */
+    .wipe {
+      animation: wipe both var(--ease-out-file);
+      animation-timeline: view();
+      animation-range: entry 10% cover 35%;
+    }
+
+    /* Exhibits: pulled out of the drawer, alternating sides. */
+    .exhibit {
+      animation: drawer both var(--ease-out-file);
+      animation-timeline: view();
+      animation-range: entry 0% cover 30%;
+    }
+
+    /* Card trick: the four cards are dealt out from one deck. */
+    .deal {
+      animation: deal both var(--ease-out-file);
+      animation-timeline: view();
+      animation-range: entry 5% cover 40%;
+    }
+
+    /* Closing light: the lamp warms up as the last section comes in. */
+    .dusk-glow {
+      animation: dusk linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 70%;
+    }
+  }
+}
+@keyframes hero-board {
+  to {
+    transform: translateY(70px) scale(0.95);
+    opacity: 0.35;
+  }
+}
+@keyframes hero-copy {
+  to {
+    transform: translateY(-36px);
+    opacity: 0.4;
+  }
+}
+@keyframes wipe {
+  from {
+    clip-path: inset(-25% 100% -25% 0);
+  }
+  to {
+    clip-path: inset(-25% -5% -25% 0);
+  }
+}
+@keyframes drawer {
+  from {
+    opacity: 0;
+    transform: translate(calc(var(--dir, 1) * -60px), 40px) rotate(calc(var(--dir, 1) * -4deg));
+  }
+}
+@keyframes deal {
+  from {
+    opacity: 0;
+    transform: translateX(calc((1.5 - var(--i, 0)) * 100%)) translateY(40px) rotate(calc((var(--i, 0) - 1.5) * -8deg));
+  }
+}
+@keyframes dusk {
+  from {
+    opacity: 0.15;
+    transform: scale(0.7) translateY(20%);
+  }
 }
 
 @media print {

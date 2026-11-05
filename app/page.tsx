@@ -65,7 +65,7 @@ export default function Home() {
       <Lamp className="relative overflow-hidden border-b border-line">
         <div aria-hidden className="blinds absolute inset-0" />
         <section aria-labelledby="hero-title" className="wrap relative grid min-h-[calc(100svh-72px)] items-center gap-12 py-12 lg:grid-cols-12 lg:gap-8 lg:py-16">
-          <div className="lg:col-span-7">
+          <div className="hero-copy lg:col-span-7">
             <p className="label enter flex flex-wrap items-center gap-x-3 gap-y-1 text-muted" style={{ "--i": 0 } as React.CSSProperties}>
               <span className="inline-flex items-center gap-2 text-fg">
                 <span aria-hidden className="h-2 w-2 rounded-full bg-success" />
@@ -108,7 +108,7 @@ export default function Home() {
               {proof.map((p) => (
                 <li key={p.slug} className="border-b border-line sm:border-b-0 sm:border-r sm:last:border-r-0">
                   <Link href={`/case-files/${p.slug}`} className="group block py-4 sm:px-4 sm:first:pl-0">
-                    <span className="display block text-[clamp(28px,2.4vw,36px)] leading-none text-fg group-hover:text-crimson">{p.value}</span>
+                    <span className="proof-value display inline-block text-[clamp(28px,2.4vw,36px)] leading-none text-fg group-hover:text-crimson">{p.value}</span>
                     <span className="mt-1.5 block text-[13px] leading-snug text-muted">{p.label}</span>
                   </Link>
                 </li>
@@ -116,7 +116,7 @@ export default function Home() {
             </ul>
           </div>
 
-          <div className="hidden w-full max-w-[620px] md:mx-auto md:block lg:col-span-5 lg:max-w-none">
+          <div className="hero-board hidden w-full max-w-[620px] md:mx-auto md:block lg:col-span-5 lg:max-w-none">
             <EvidenceBoard />
           </div>
 
@@ -166,10 +166,10 @@ export default function Home() {
         />
         <ol className="border-t border-line">
           {cases.map((c) => (
-            <li key={c.slug} className="reveal border-b border-line">
+            <li key={c.slug} className="index-item reveal border-b border-line">
               <Link
                 href={`/case-files/${c.slug}`}
-                className="group grid grid-cols-[36px_minmax(0,1fr)_auto] items-center gap-x-4 gap-y-2 py-6 md:grid-cols-[64px_minmax(0,1.6fr)_minmax(0,1fr)_minmax(0,0.9fr)_24px] md:gap-x-8 md:py-7"
+                className="index-row group relative -mx-3 grid px-3 md:-mx-4 md:px-4 grid-cols-[36px_minmax(0,1fr)_auto] items-center gap-x-4 gap-y-2 py-6 md:grid-cols-[64px_minmax(0,1.6fr)_minmax(0,1fr)_minmax(0,0.9fr)_24px] md:gap-x-8 md:py-7"
               >
                 <span className="label col-start-1 row-start-1 text-faint transition-colors group-hover:text-alert">{c.number}</span>
                 <span className="display col-start-2 row-start-1 text-[clamp(30px,3.6vw,56px)] text-fg transition-transform duration-300 group-hover:translate-x-2">
@@ -184,6 +184,10 @@ export default function Home() {
                   <span className="label !text-[10px]">{evidenceLabel[c.headline.kind]}</span>
                 </span>
                 <ArrowRight className="col-start-3 row-start-1 text-faint transition-colors group-hover:text-alert md:col-start-5" />
+                {/* Folder tab that appears when the row is opened like a file; the whole row is the link. */}
+                <span aria-hidden className="index-tab label">
+                  Case {c.number} · Investigate it yourself <ArrowRight />
+                </span>
               </Link>
             </li>
           ))}
@@ -220,8 +224,8 @@ export default function Home() {
                 <Link
                   key={s.slug}
                   href={`/case-files/${s.slug}`}
-                  className="manila reveal group relative flex flex-col p-6 transition-transform duration-300 hover:-translate-y-1 md:p-8"
-                  style={{ rotate: `${[-0.6, 0.4, -0.3][i]}deg` }}
+                  className="manila exhibit group relative flex flex-col p-6 md:p-8"
+                  style={{ "--r": `${[-0.6, 0.4, -0.3][i]}deg`, "--dir": i % 2 ? -1 : 1 } as React.CSSProperties}
                 >
                   <span className="label flex justify-between !text-[11px] text-tag-muted">
                     <span>Exhibit {String.fromCharCode(65 + i)}</span>
@@ -259,8 +263,8 @@ export default function Home() {
               <h3 className="label text-amber">{g.group}</h3>
               <ul className="mt-5 space-y-2.5 text-[16px] text-fg">
                 {g.items.map((s) => (
-                  <li key={s} className="flex items-baseline gap-3">
-                    <span aria-hidden className="h-px w-3 shrink-0 translate-y-[-4px] bg-line" />
+                  <li key={s} className="skill-item flex items-baseline gap-3">
+                    <span aria-hidden className="skill-dash h-px w-3 shrink-0 translate-y-[-4px] bg-line" />
                     {s}
                   </li>
                 ))}
@@ -297,7 +301,8 @@ export default function Home() {
       </section>
 
       {/* ---------- E. Closing CTA ---------- */}
-      <section aria-labelledby="close-title" className="relative overflow-hidden border-t border-line bg-[radial-gradient(80%_120%_at_50%_120%,rgba(233,166,70,.35),transparent_70%)]">
+      <section aria-labelledby="close-title" className="relative isolate overflow-hidden border-t border-line">
+        <div aria-hidden className="dusk-glow absolute inset-0 -z-10 bg-[radial-gradient(80%_120%_at_50%_120%,rgba(233,166,70,.35),transparent_70%)]" />
         <div className="wrap py-28 text-center md:py-40">
           <p className="label text-faint">End of the briefing</p>
           <h2 id="close-title" className="display reveal mx-auto mt-5 max-w-[14ch] text-[clamp(52px,8vw,128px)]">

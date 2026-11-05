@@ -50,3 +50,6 @@ next-env.d.ts
 
 # local QA mirrors and sync archives
 /.qa/
+
+# private deploy notes
+/DEPLOY.md
