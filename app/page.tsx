@@ -7,6 +7,7 @@ import { Lamp } from "@/components/hero/lamp";
 import { ColdReading } from "@/components/hero/cold-reading";
 import { CardTrick } from "@/components/card-trick";
 import { SectionHead } from "@/components/section-head";
+import { Seal } from "@/components/seal";
 import { ArrowRight } from "@/components/icons";
 import { siteUrl } from "@/content/site";
 
@@ -166,7 +167,7 @@ export default function Home() {
         />
         <ol className="border-t border-line">
           {cases.map((c) => (
-            <li key={c.slug} className="index-item reveal border-b border-line">
+            <li key={c.slug} className="index-item reveal relative border-b border-line">
               <Link
                 href={`/case-files/${c.slug}`}
                 className="index-row group relative -mx-3 grid px-3 md:-mx-4 md:px-4 grid-cols-[36px_minmax(0,1fr)_auto] items-center gap-x-4 gap-y-2 py-6 md:grid-cols-[64px_minmax(0,1.6fr)_minmax(0,1fr)_minmax(0,0.9fr)_24px] md:gap-x-8 md:py-7"
@@ -187,6 +188,33 @@ export default function Home() {
                 {/* Folder tab that appears when the row is opened like a file; the whole row is the link. */}
                 <span aria-hidden className="index-tab label">
                   Case {c.number} · Investigate it yourself <ArrowRight />
+                </span>
+                {/* Wide screens: a case file slides out on hover. Decorative; the link text already names the case. */}
+                <span aria-hidden className="index-file manila">
+                  <Seal number={c.number} className="index-seal" />
+                  <span className="label block !text-[10px] text-tag-muted">Case file {c.number} · Classified</span>
+                  <span className="display mt-2 block pr-10 text-[28px] leading-[1] text-tag-ink">{c.title}</span>
+                  <span className="mt-1 block text-[12px] text-tag-muted">{c.name}</span>
+                  <span className="label mt-4 block border-t border-tag-ink/15 pt-3 !text-[10px] text-crimson">Suspects</span>
+                  <span className="mt-1.5 block space-y-1 text-[13px] leading-snug text-tag-ink">
+                    {c.suspects.map((s) => (
+                      <span key={s} className="flex gap-2">
+                        <span className="text-crimson">?</span>
+                        {s}
+                      </span>
+                    ))}
+                  </span>
+                  <span className="label mt-4 block border-t border-tag-ink/15 pt-3 !text-[10px] text-crimson">Clues</span>
+                  <span className="mt-1.5 block text-[13px] leading-snug text-tag-ink">
+                    <span className="display text-[22px]">{c.headline.value}</span> · {evidenceLabel[c.headline.kind].toLowerCase()}
+                  </span>
+                  <span className="label mt-1 block !text-[10px] text-tag-muted">{c.stackShort.slice(0, 2).join(" · ")}</span>
+                  <span className="mt-4 flex items-center justify-between gap-3">
+                    <span className="stamp -rotate-3 whitespace-nowrap !text-[10px] text-crimson">Sealed</span>
+                    <span className="label inline-flex items-center gap-1.5 whitespace-nowrap !text-[10px] text-tag-ink">
+                      Investigate it yourself <ArrowRight />
+                    </span>
+                  </span>
                 </span>
               </Link>
             </li>

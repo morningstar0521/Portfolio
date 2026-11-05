@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { cases } from "@/content/cases";
 import { awards, certifications, education, experience, leadership, portrait, profile } from "@/content/profile";
 import { PinnedPhoto } from "@/components/case-study/pinned-photo";
 import { ArrowRight, External } from "@/components/icons";
@@ -9,6 +10,16 @@ export const metadata: Metadata = {
   description: "Shubh Ghiya: dual-degree student at IIT Madras and UIT RGPV, full-stack developer at Nakhrali Luxury, building backends, developer tools and ML systems.",
   alternates: { canonical: "/about" },
 };
+
+// How I work, each habit backed by a case you can open. Restates facts already in content/cases.ts.
+const method = [
+  ["Question the obvious", "Assume the browser lies. Nakhrali recomputes every price, total and promotion on the server.", "nakhrali"],
+  ["Go looking for the failure", "Crash the workers, lose Redis, then check 10 invariants: nothing lost, nothing done twice.", "idempotent-event-processor"],
+  ["Reproduce it before fixing it", "A parallel test put 40 bookings on one parking spot. After the fix: one.", "quickpark"],
+  ["Measure against an honest baseline", "Beat a Bayesian popularity baseline 1.53× on a chronological split, so the future never leaks in.", "movielens"],
+  ["Check, don't trust", "Read a README's claims and verify them against the repo itself, without running its code.", "readme-intelligence"],
+  ["Plan for the dependency going down", "If one AI provider fails, another takes over, and rules fill whatever the models miss.", "venturelens"],
+] as const;
 
 const focus = [
   ["Backend systems", "Payments, idempotency, queues, concurrency and the database guarantees under them."],
@@ -75,6 +86,34 @@ export default function AboutPage() {
           <p className="mt-4 text-[17px] leading-relaxed text-muted">{profile.positioning}</p>
         </div>
       </header>
+
+      {/* Engineering style: curiosity first, proof last */}
+      <section aria-labelledby="method" className="grid gap-10 border-b border-line py-16 md:grid-cols-12">
+        <div className="md:col-span-4">
+          <h2 id="method" className="display text-[clamp(40px,5vw,72px)]">
+            How I investigate
+          </h2>
+          <p className="mt-5 max-w-[34ch] text-[17px] leading-relaxed text-muted">
+            I&apos;m curious enough to go looking for problems before users find them, and I enjoy staying with one until the
+            fix is proven. Explore how it breaks, build the fix, then show the number.
+          </p>
+        </div>
+        <ol className="grid gap-px border border-line bg-line sm:grid-cols-2 md:col-span-8">
+          {method.map(([t, d, slug], i) => {
+            const c = cases.find((x) => x.slug === slug)!;
+            return (
+              <li key={t} className="flex flex-col bg-ground p-6">
+                <span className="label !text-[11px] text-alert">{String(i + 1).padStart(2, "0")}</span>
+                <h3 className="mt-2 text-[18px] font-semibold text-fg">{t}</h3>
+                <p className="mt-2 flex-1 text-[15px] leading-relaxed text-muted">{d}</p>
+                <Link href={`/case-files/${slug}`} className="label link-underline mt-4 inline-flex min-h-11 items-center gap-2 self-start !text-[11px] text-fg">
+                  Case {c.number} · {c.name} <ArrowRight />
+                </Link>
+              </li>
+            );
+          })}
+        </ol>
+      </section>
 
       {/* Timeline: a plain list that reads correctly with or without motion */}
       <section aria-labelledby="timeline" className="grid gap-10 border-b border-line py-16 md:grid-cols-12">

@@ -554,6 +554,22 @@ body {
 .trick-card[data-flipped="true"] > .inner {
   transform: rotateY(180deg);
 }
+/* Shuffle: cards sit in a pile (translate set from JS) and riffle left/right twice. */
+.trick-card.riffle {
+  animation: riffle 320ms ease-in-out 2;
+  animation-timeline: auto;
+}
+@keyframes riffle {
+  0%,
+  100% {
+    translate: var(--dx) var(--dy);
+  }
+  50% {
+    translate: calc(var(--dx) + var(--s) * 46%) calc(var(--dy) - 12px);
+    rotate: calc(var(--s) * 7deg);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .trick-card > .inner {
     transition: none;
@@ -703,6 +719,61 @@ body {
   .index-row *,
   .index-tab {
     transition: none;
+  }
+}
+
+/* Wide screens with a mouse: the hovered row slides a case file out from behind its arrow.
+   It replaces the tab there; phones and tablets keep the tab. */
+.index-file {
+  display: none;
+}
+@media (hover: hover) and (min-width: 1024px) {
+  .index-item:hover {
+    z-index: 5; /* lift the whole row so its file sits above the rows below */
+  }
+  .index-row:hover .index-tab,
+  .index-row:focus-visible .index-tab {
+    opacity: 0;
+  }
+  .index-file {
+    position: absolute;
+    right: 3.5rem;
+    top: 50%;
+    z-index: 3;
+    display: block;
+    width: 310px;
+    padding: 22px 22px 18px;
+    pointer-events: none;
+    opacity: 0;
+    translate: 40px -50%;
+    rotate: 5deg;
+    box-shadow: 0 34px 50px -26px rgba(40, 20, 5, 0.7);
+    transition:
+      opacity 240ms var(--ease-out-file),
+      translate 380ms var(--ease-out-file),
+      rotate 380ms var(--ease-out-file);
+  }
+  .index-row:hover .index-file,
+  .index-row:focus-visible .index-file {
+    opacity: 1;
+    translate: 0 -50%;
+    rotate: 2deg;
+    transition-delay: 90ms;
+  }
+  .index-seal {
+    position: absolute;
+    top: -18px;
+    right: -14px;
+    width: 64px;
+    height: 64px;
+    rotate: -12deg;
+    filter: drop-shadow(0 4px 4px rgba(40, 10, 5, 0.4));
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .index-file {
+    transition: opacity 120ms;
+    rotate: 2deg;
   }
 }
 

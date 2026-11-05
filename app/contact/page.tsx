@@ -3,6 +3,7 @@ import Link from "next/link";
 import { profile } from "@/content/profile";
 import { CopyButton } from "@/components/copy-button";
 import { Thumbprint } from "@/components/thumbprint";
+import { ContactNote } from "@/components/contact-note";
 import { ArrowRight, Download, External } from "@/components/icons";
 
 export const metadata: Metadata = {
@@ -18,10 +19,10 @@ export default function ContactPage() {
       aria-labelledby="rj-title"
       className="night relative isolate min-h-[calc(100svh-72px)] overflow-hidden bg-ground bg-[radial-gradient(70%_60%_at_75%_45%,rgba(165,30,50,.45),transparent_70%),radial-gradient(60%_50%_at_10%_100%,rgba(165,30,50,.18),transparent_70%)]"
     >
-      <Thumbprint id="tp-contact" className="pointer-events-none absolute top-[46%] right-[-38%] -z-10 h-[62%] -translate-y-1/2 rotate-[-10deg] opacity-35 md:right-[-14%] md:opacity-45 lg:right-[-1%] lg:h-[74%] lg:opacity-60" />
+      <Thumbprint id="tp-contact" className="pointer-events-none absolute top-[46%] right-[-38%] -z-10 h-[62%] -translate-y-1/2 rotate-[-10deg] opacity-35 md:right-[-14%] md:opacity-45 lg:top-[24px] lg:right-[7%] lg:h-[360px] lg:translate-y-0 lg:rotate-[-14deg] lg:opacity-70" />
 
-      <div className="wrap relative grid min-h-[calc(100svh-72px)] items-center py-16 md:py-24">
-        <div className="max-w-3xl">
+      <div className="wrap relative grid min-h-[calc(100svh-72px)] items-center gap-14 py-16 md:py-24 lg:grid-cols-12 lg:gap-10">
+        <div className="max-w-3xl lg:col-span-7">
           <p className="label enter text-alert">Case 08 · The last file</p>
           <h1 id="rj-title" className="display enter mt-6 whitespace-nowrap text-[clamp(68px,12vw,184px)] text-fg" style={{ "--i": 1 } as React.CSSProperties}>
             Red John.
@@ -85,6 +86,10 @@ export default function ContactPage() {
               Or reopen the files
             </Link>
           </p>
+        </div>
+
+        <div className="enter w-full max-w-[560px] justify-self-center lg:col-span-5 lg:justify-self-end" style={{ "--i": 6 } as React.CSSProperties}>
+          <ContactNote />
         </div>
       </div>
     </section>

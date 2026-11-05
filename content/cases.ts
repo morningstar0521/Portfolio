@@ -60,6 +60,8 @@ export type CaseFile = {
   hero?: Shot;
   shots?: Shot[];
   lastVerified: string;
+  /** Short "what could go wrong" lines for the index hover file; each restates the case's own problem text. */
+  suspects: string[];
   award?: string;
 };
 
@@ -93,6 +95,7 @@ export const cases: CaseFile[] = [
       "Hostinger VPS", "Ubuntu", "Nginx", "PM2", "GitHub Actions", "GA4", "Meta Pixel",
     ],
     stackShort: ["React 19", "Express 5", "PostgreSQL", "Razorpay", "Nginx + PM2"],
+    suspects: ["Prices tampered with in the browser", "Cart totals and promotions drifting apart", "Orders out of step with payment outcomes"],
     headline: { value: "100+", label: "orders processed in production", kind: "production", note: "Self-reported, Oct 2026" },
     evidence: [
       { value: "100+", label: "registered users", kind: "production", note: "Self-reported, Oct 2026" },
@@ -185,6 +188,7 @@ export const cases: CaseFile[] = [
     role: ["Solo project."],
     stack: ["TypeScript", "Node.js 20", "Express 5", "PostgreSQL 16", "Redis 7 (Streams, consumer groups, Lua)", "Docker Compose", "k6", "Vitest", "GitHub Actions"],
     stackShort: ["TypeScript", "PostgreSQL 16", "Redis Streams", "Docker", "k6"],
+    suspects: ["Workers crashing mid-event", "Expired locks and piled-up retries", "Redis disappearing entirely"],
     headline: { value: "18,000 / 18,000", label: "unique events processed in a 90 s load test", kind: "local-benchmark" },
     evidence: [
       { value: "0 lost · 0 duplicated", label: "across 6 Docker chaos scenarios", kind: "code-verified" },
@@ -247,6 +251,7 @@ export const cases: CaseFile[] = [
     role: ["Solo project."],
     stack: ["TypeScript", "Next.js 14", "pnpm monorepo", "Zod", "Vitest", "Playwright", "GitHub Actions", "Vercel"],
     stackShort: ["TypeScript", "Next.js 14", "pnpm monorepo", "Vitest", "Playwright"],
+    suspects: ["Commands the package.json contradicts", "Env variables the code never reads", "Docs drifting away from the repo"],
     headline: { value: "87.4%", label: "F1 on environment variables, 59 hand-labelled READMEs", kind: "offline-eval" },
     evidence: [
       { value: "87.4%", label: "F1 · environment variables", kind: "offline-eval", note: "59 hand-labelled READMEs" },
@@ -303,6 +308,7 @@ export const cases: CaseFile[] = [
     role: ["Solo project (23 commits)."],
     stack: ["Python 3.11", "implicit (ALS)", "NumPy", "SciPy sparse", "pandas", "Parquet", "FastAPI", "Streamlit", "pytest", "GitHub Actions", "Docker", "Hugging Face Spaces", "MLflow (local) / JSONL run log"],
     stackShort: ["Python", "implicit ALS", "FastAPI", "Streamlit", "Docker"],
+    suspects: ["The future leaking into training", "A popularity baseline that is hard to beat", "Brand-new users with no history"],
     headline: { value: "1.53×", label: "NDCG@10 over a Bayesian popularity baseline", kind: "offline-eval" },
     evidence: [
       { value: "0.09897 → 0.15108", label: "NDCG@10, baseline → ALS (1.53×)", kind: "offline-eval" },
@@ -370,6 +376,7 @@ export const cases: CaseFile[] = [
     role: ["IIT Madras course project · Best Project Award (2025)."],
     stack: ["Python", "Flask", "SQLAlchemy", "SQLite", "Vue.js 3", "Celery + Beat", "Redis", "JWT", "ReportLab", "Docker Compose", "Caddy", "Gunicorn", "AWS EC2"],
     stackShort: ["Flask", "Vue 3", "Celery", "Redis", "AWS EC2"],
+    suspects: ["Many requests racing for one spot", "Double bookings slipping through", "Scheduled jobs and analytics running alongside"],
     headline: { value: "40 → 1", label: "bookings on one spot under a parallel test, before and after the fix", kind: "code-verified" },
     evidence: [
       { value: "40 → 1", label: "bookings on one spot: old code vs fixed code under parallel load", kind: "code-verified" },
@@ -432,6 +439,7 @@ export const cases: CaseFile[] = [
     role: ["Solo project."],
     stack: ["Python", "scikit-learn (Pipeline, ColumnTransformer, TF-IDF, HalvingRandomSearchCV)", "XGBoost", "LightGBM", "SciPy", "pandas"],
     stackShort: ["scikit-learn", "LightGBM", "XGBoost", "TF-IDF", "SciPy"],
+    suspects: ["~198,000 comments to sort", "Four imbalanced categories", "A smallest class of only 2.8%"],
     headline: { value: "5th / 2,343", label: "Kaggle competition, IIT Madras", kind: "competition" },
     evidence: [
       { value: "5th / 2,343", label: "final rank · public score 0.84870", kind: "competition" },
@@ -488,6 +496,7 @@ export const cases: CaseFile[] = [
     role: ["Solo project (all 28 commits)."],
     stack: ["TypeScript", "Next.js 15 (App Router, Server Actions)", "React 19", "Tailwind CSS 4", "NextAuth v5", "Zod", "Neon PostgreSQL", "Google Gemini 2.5 Flash", "Groq (gpt-oss-120b, with model fallbacks)", "Vercel"],
     stackShort: ["Next.js 15", "TypeScript", "NextAuth v5", "Gemini + Groq", "PostgreSQL"],
+    suspects: ["A model provider going down", "Sections a model fails to fill", "Duplicate roles in a founding team"],
     headline: { value: "2 pipelines + rules", label: "parallel AI analysis with rule-based fallbacks", kind: "code-verified" },
     evidence: [
       { value: "0–100", label: "Venture Score from two AI pipelines run in parallel (Gemini: market · Groq: competition, risk, feasibility)", kind: "code-verified" },

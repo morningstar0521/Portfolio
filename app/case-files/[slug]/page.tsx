@@ -65,7 +65,7 @@ async function CaseBody({ params }: Pick<PageProps<"/case-files/[slug]">, "param
             {c.number}
           </span>
         )}
-        <div className={`wrap relative py-14 md:py-20 ${c.hero ? "lg:min-h-[640px] lg:pr-[calc(44%+var(--gutter))]" : ""}`}>
+        <div className={`wrap relative @container py-14 md:py-20 ${c.hero ? "lg:min-h-[640px] lg:pr-[calc(min(44%,640px)+var(--gutter))]!" : ""}`}>
           <div className="flex flex-wrap items-center gap-3">
             <Link href="/case-files" className="label link-underline inline-flex min-h-11 items-center gap-2 text-muted hover:text-fg">
               <ArrowLeft /> Archive
@@ -80,7 +80,7 @@ async function CaseBody({ params }: Pick<PageProps<"/case-files/[slug]">, "param
             {c.award && <span className="stamp stamp-in rotate-2 text-crimson">{c.award}</span>}
           </div>
 
-          <h1 className="display enter mt-8 max-w-[16ch] text-[clamp(52px,8vw,124px)]" style={{ "--i": 1 } as React.CSSProperties}>
+          <h1 className="display enter mt-8 max-w-[16ch] text-[clamp(44px,15cqi,124px)]" style={{ "--i": 1 } as React.CSSProperties}>
             {c.title}
           </h1>
           <p className="enter mt-5 text-[clamp(20px,2vw,26px)] text-fg" style={{ "--i": 2 } as React.CSSProperties}>

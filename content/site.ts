@@ -7,3 +7,6 @@ export const nav = [
   { href: "/case-files", label: "Case Files" },
   { href: "/about", label: "About" },
 ] as const;
+
+// Web3Forms access key for the contact note. Public by design: it can only deliver messages to Shubh's inbox.
+export const web3formsKey = "39fdb981-ae62-45d9-9281-f43cd14d6ca0";
